@@ -16,6 +16,8 @@ const myPositionIcon = L.icon({
 });
 
 function init() {
+    if (document.getElementById('map') === null) return;
+
     createMap('map');
     
     // registerSW();

@@ -1,7 +1,7 @@
 import Navbar from '../components/Navbar'
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Map from './Map'
-import Poi from './Poi'
+import Poi from './Pois'
 import Events from './Events'
 import Tickets from './Tickets'
 import NoPage from './NoPage'

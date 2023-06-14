@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 export default function MobileNavbar() {
   return (
     <nav id="navPhone" className="nav">
-      <NavLink className="nav__link" exact to="/">
+      <NavLink className="nav__link" to="/">
         <i className="material-icons nav__icon">map</i>
         <span className="nav__text">Mappa</span>
       </NavLink>

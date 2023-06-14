@@ -7,7 +7,7 @@
     #navPhone{
         display:flex;
     }
-    body {
+    #root {
         padding-bottom: 56px;
     }
     #logout {
@@ -65,7 +65,7 @@
 
 
 /* LOGIN STYLE */
-body {
+#root, html {
     font-family: 'Poppins', sans-serif;
     background: #eee;
     margin: 0;

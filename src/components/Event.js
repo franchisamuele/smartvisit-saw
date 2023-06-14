@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { Link } from 'react-router-dom';
 
 export default function Event() {
   return (
@@ -10,7 +11,7 @@ export default function Event() {
           <h6 className="card-title text-center">NOMEPOI</h6>
         </div>
         <div className="card-footer text-end">
-          <a href="TODO" className="btn btn-primary">Acquista un Biglietto</a>
+          <Link to="/buyticket/12345" className="btn btn-primary">Acquista un Biglietto</Link>
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { Link } from 'react-router-dom';
 
 export default function Poi() {
   return (
@@ -9,8 +10,7 @@ export default function Poi() {
           <h5 className="card-title text-center">NOMEPOI</h5>
         </div>
         <div className="card-footer text-end">
-          <a className="btn btn-primary" href="TODO" role="button">Acquista un Biglietto (se POI no evento)</a>
-          <a href="poiDetail.php?id=<?php echo $row['Id'] ?>" className="btn btn-primary">Dettagli</a>
+          <Link to="/pointsOfInterest/12345" className="btn btn-primary">Dettagli</Link>
         </div>
       </div>
     </div>

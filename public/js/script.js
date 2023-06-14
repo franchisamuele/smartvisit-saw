@@ -54,8 +54,10 @@ function addMarker(latitude, longitude, popup) {
 }
 
 function success(position) {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
+    // const latitude = position.coords.latitude;
+    // const longitude = position.coords.longitude;
+    const latitude = 51.507351;
+    const longitude = -0.127758;
 
     console.log(latitude + ', ' + longitude);
 
@@ -83,16 +85,16 @@ function registerSW() {
 
 // Parte dinamica
 function addPOIs() {
-    const latitude = 4;
-    const longitude = 9;
+    const latitude = 51.507351;
+    const longitude = -0.127758;
 
-    addMarker(latitude, longitude, '<b><a style="text-decoration: none;" href="LINKDETTAGLIOPOI">NOMEPOI</a></b><br>');
+    addMarker(latitude, longitude, '<b><a style="text-decoration: none;" href="/pointsOfInterest/12345">NOMEPOI</a></b><br>');
     map.closePopup();
 }
 
 function showPOI() {
-    const poiLatitude = 4;
-    const poiLongitude = 9;
+    const poiLatitude = 51.507351;
+    const poiLongitude = -0.127758;
 
     map.setView(poiLatitude, poiLongitude);
 }

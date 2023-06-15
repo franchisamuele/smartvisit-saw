@@ -7,12 +7,6 @@
     #navPhone{
         display:flex;
     }
-    #root {
-        padding-bottom: 56px;
-    }
-    #logout {
-        display: block;
-    }
 }
 @media screen and (min-width: 768px) {
     #navDesktop{
@@ -21,11 +15,7 @@
     #navPhone{
         display:none;
     }
-    #logout {
-        display: none;
-    }
 }
-
 
 /* PHONE NAV STYLE */
 .nav {
@@ -63,47 +53,9 @@
 }
 /* PHONE NAV STYLE */
 
-
-/* LOGIN STYLE */
-#root, html {
+#root {
     font-family: 'Poppins', sans-serif;
     background: #eee;
     margin: 0;
-}
-.login-container {
-    color: #666;
-    height: 100vh;
-    width: 100%;
-}
-.login-form {
-    margin: auto;
-    width: 350px;
-    padding: 15px;
-    max-width: 100%;
-    margin: 0 5%;
-}
-.login-form .form-control {
-    font-size: 15px;
-    min-height: 48px;
-    font-weight: 500;
-}
-.btn-custom {
-    color: #fff;
-    font-size: 15px;
-    font-weight: 600;
-    min-height: 48px;
-}
-.login-form a {
-    cursor: pointer;
-    text-decoration: none;
-    color: #666;
-}
-* {
-    box-sizing: border-box;
-}
-/* LOGIN STYLE */
-
-
-#map {
     height: 100vh;
 }

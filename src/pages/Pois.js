@@ -1,5 +1,4 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Search from '../components/Search';
 import Poi from '../components/Poi';
 import { useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
@@ -19,8 +18,6 @@ export default function Pois() {
 
   return (
     <div className="container mt-1 mb-3">
-      <Search />
-
       <div className="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
         {pois.map((poi) => {
           return (<Poi

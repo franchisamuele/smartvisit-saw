@@ -60,11 +60,10 @@
 
 /* PHONE NAV STYLE */
 
-#root {
+#root, html {
     font-family: 'Poppins', sans-serif;
     background: #eee;
     margin: 0;
-    height: 100vh;
 }
 
 /* LOADING SPINNER */

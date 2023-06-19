@@ -1,34 +1,61 @@
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { db } from '../firebaseConfig'
+import { collection, addDoc, doc, getDoc } from "firebase/firestore";
 
-export default function EventTicket() {
-  var currentPrice = 0;
-  // var currentPrice = prezzo * persone;
+export default function EventTicket({ data }) {
+  const { ticketType, index } = useParams();
+  const navigate = useNavigate();
+
+  const [numeroPersone, setNumeroPersone] = useState(1);
+  const currentPrice = data.prezzoBiglietto * numeroPersone;
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    const res = {
+      nomePoi: data.nomePoi,
+      nomeEvento: data.nome,
+      idCollegato: index,
+      tipo: ticketType,
+      data: data.dataOra,
+      persone: numeroPersone,
+      prezzoTotale: currentPrice
+    };
+    await addDoc(collection(db, "tickets"), res);
+
+    navigate('/tickets');
+  }
+
+  function getFormattedDate(timestamp) {
+    // Crea un oggetto Date utilizzando il timestamp
+    const date = new Date(timestamp);
+
+    // Estrai i componenti della data
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1; // I mesi in JavaScript sono indicizzati da 0 a 11, quindi aggiungi 1
+    const day = date.getDate();
+    const hours = date.getHours().toString().padStart(2, '0');;
+    const minutes = date.getMinutes().toString().padStart(2, '0');;
+
+    // Costruisci la stringa di output nel formato desiderato
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
+  }
 
   return (
     <div className="container">
 
-      <form method="POST" action="buyTicket.php?idevent=<?php echo $_GET['idevent'] ?>">
+      <form onSubmit={handleSubmit}>
 
-        <p className="mt-3">Evento: NOMEEVENTO</p>
-
-        <p>Luogo: NOMELUOGO
-          <input type="hidden" value="<?php echo $row['Id'] ?>" name="idpoi"></input>
-        </p>
-
-        <p>Prezzo a persona: EURO €
-          <input type="hidden" value="<?php echo $row['Prezzo'] ?>" name="prezzo" id="prezzo"></input>
-        </p>
-
-        <p>Data e ora: DATAORA
-          <input type="hidden" value="<?php echo $row['DataOra'] ?>" name="dataora"></input>
-        </p>
-
-        <p>Persone:&nbsp;
-          <input type="Text" name="persone" id="persone" default="1" placeholder="1"></input>
-        </p>
+        <p className="mt-3">Evento: {data.nome}</p>
+        <p className="mt-3">Luogo: {data.nomePoi}</p>
+        <p>Prezzo a persona: {data.prezzoBiglietto} €</p>
+        <p>Data e ora: {getFormattedDate(data.dataOra.seconds * 1000)}</p>
+        <p>Persone: <input type="text" value={numeroPersone} onChange={(e) => setNumeroPersone(e.target.value)} placeholder="Numero persone" required></input></p>
 
         <p className="mt-5">Prezzo totale: {currentPrice} €</p>
 
-        <input className="btn btn-primary" name="submit" type="submit" value="Acquista"></input>
+        <input className="btn btn-primary" type="submit" value="Acquista"></input>
 
       </form>
     </div>

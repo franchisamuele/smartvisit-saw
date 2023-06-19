@@ -1,9 +1,11 @@
 import Event from '../components/Event';
 import { useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore'
+import { useNavigate } from 'react-router-dom';
 
 export default function Events() {
+  const navigate = useNavigate();
   const [events, setEvents] = useState([]);
 
   const docRef = collection(db, 'events');

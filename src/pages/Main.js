@@ -21,7 +21,7 @@ export default function Main() {
         <Route path="/pointsOfInterest/:poiIndex" element={<PoiDetail />} />
         <Route path="/events" element={<Events />} />
         <Route path="/tickets" element={<Tickets />} />
-        <Route path="/buyticket/:index" element={<BuyTicket />} />
+        <Route path="/buyticket/:ticketType/:index" element={<BuyTicket />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </BrowserRouter>

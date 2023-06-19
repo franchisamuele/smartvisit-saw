@@ -9,7 +9,9 @@ export default function Poi({ id, nome, linkImmagine }) {
           <h5 className="card-title text-center">{nome}</h5>
         </div>
         <div className="card-footer text-end">
-          <Link to={"/pointsOfInterest/" + id} className="btn btn-primary">Dettagli</Link>
+          <Link to={"/pointsOfInterest/" + id} className="btn btn-primary">
+            Dettagli
+          </Link>
         </div>
       </div>
     </div>

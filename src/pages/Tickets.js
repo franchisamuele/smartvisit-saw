@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
 import Ticket from '../components/Ticket';
 
 export default function Tickets() {

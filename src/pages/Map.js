@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
 import { Icon } from 'leaflet'

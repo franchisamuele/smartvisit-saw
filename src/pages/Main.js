@@ -7,6 +7,9 @@ import Events from './Events'
 import Tickets from './Tickets'
 import BuyTicket from './BuyTicket'
 import NoPage from './NoPage'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'jquery/dist/jquery.min.js'
+import 'bootstrap/dist/js/bootstrap.min.js'
 
 export default function Main() {
   return (

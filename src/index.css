@@ -1,19 +1,22 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900');
 
 @media screen and (max-width: 767px) {
-    #navDesktop{
-        display:none;
+    #navDesktop {
+        display: none;
     }
-    #navPhone{
-        display:flex;
+
+    #navPhone {
+        display: flex;
     }
 }
+
 @media screen and (min-width: 768px) {
-    #navDesktop{
-        display:flex;
+    #navDesktop {
+        display: flex;
     }
-    #navPhone{
-        display:none;
+
+    #navPhone {
+        display: none;
     }
 }
 
@@ -29,6 +32,7 @@
     display: flex;
     overflow-x: auto;
 }
+
 .nav__link {
     display: flex;
     flex-direction: column;
@@ -45,12 +49,15 @@
     -webkit-tap-highlight-color: transparent;
     transition: background-color 0.1s ease-in-out;
 }
+
 #navPhone>.active {
     color: #0d6efd;
 }
+
 .nav__icon {
     font-size: 18px;
 }
+
 /* PHONE NAV STYLE */
 
 #root {
@@ -59,3 +66,41 @@
     margin: 0;
     height: 100vh;
 }
+
+/* LOADING SPINNER */
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 10px solid #f3f3f3;
+    /* Light grey */
+    border-top: 10px solid #383636;
+    /* Blue */
+    border-radius: 50%;
+    animation: spinner 1.5s linear infinite;
+    caret-color: transparent;
+}
+
+.spinner-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    background-color: rgba(255, 255, 255, 0.7);
+}
+/* LOADING SPINNER */

@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
 
 export default function EventTicket() {
   var currentPrice = 0;

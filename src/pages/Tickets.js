@@ -8,16 +8,21 @@ export default function Tickets() {
   
   const docRef = collection(db, 'tickets');
 
+  const sortDate = (a, b) => {
+    return b.data.seconds - a.data.seconds;
+  };
+
   useEffect(() => {
     const getTickets = async () => {
 
       const docSnap = await getDocs(docRef);
-      setTickets(docSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      setTickets( (docSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id }))).sort(sortDate) );
 
     };
     
     getTickets();
   }, []);
+  
   return (
     <div className="container mt-3 mb-3">
       <h1 className="mb-1 text-center">I MIEI BIGLIETTI</h1>

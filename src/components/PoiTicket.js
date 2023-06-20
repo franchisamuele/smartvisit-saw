@@ -28,6 +28,10 @@ export default function PoiTicket({ data }) {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    if (numeroPersone < 1) {
+      return alert("Il numero di persone deve essere >= 1!");
+    }
+
     const res = {
       nomePoi: data.nome,
       nomeEvento: null,
@@ -49,7 +53,7 @@ export default function PoiTicket({ data }) {
 
         <p className="mt-3">Luogo: {data.nome}</p>
         <p>Prezzo a persona: {data.prezzoBiglietto} €</p>
-        <p>Data: <input type="date" value={inputDate} onChange={(e) => setInputDate(e.target.value)} required></input></p>
+        <p>Data: <input type="date" value={inputDate} onChange={(e) => setInputDate(e.target.value)} min={getCurrentDate()} required></input></p>
         <p>Persone: <input type="text" value={numeroPersone} onChange={(e) => setNumeroPersone(e.target.value)} placeholder="Numero persone" required></input></p>
 
         <p className="mt-5">Prezzo totale: {currentPrice} €</p>

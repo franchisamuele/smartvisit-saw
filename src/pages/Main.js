@@ -1,6 +1,6 @@
 import Navbar from '../components/Navbar'
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
-import Map from './Map'
+import MapPage from './MapPage'
 import Pois from './Pois'
 import PoiDetail from './PoiDetail'
 import Events from './Events'
@@ -16,7 +16,7 @@ export default function Main() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-        <Route exact path="/" element={<Map />} />
+        <Route exact path="/:poiIndex?" element={<MapPage />} />
         <Route path="/pointsOfInterest" element={<Pois />} />
         <Route path="/pointsOfInterest/:poiIndex" element={<PoiDetail />} />
         <Route path="/events" element={<Events />} />

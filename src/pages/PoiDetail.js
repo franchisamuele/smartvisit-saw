@@ -16,12 +16,12 @@ export default function PoiDetail() {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        setPoi({...docSnap.data(), id: docSnap.id});
+        setPoi({ ...docSnap.data(), id: docSnap.id });
       } else {
         navigate('/NoPage');
       }
     };
-    
+
     getData();
   }, []);
 
@@ -31,7 +31,10 @@ export default function PoiDetail() {
       <div className="container mt-3">
         <h1 className="mt-4 text-center">{poi.nome}</h1>
         <p>Data realizzazione: {poi.dataRealizzazione}<br />
-          Prezzo biglietto: {poi.prezzoBiglietto} €<br /></p>
+          {poi.prezzoBiglietto ? 
+            <>Prezzo biglietto: {poi.prezzoBiglietto} €<br /></>
+            : null}
+        </p>
 
         <p>{poi ? poi.descrizione : ""}</p>
 
@@ -39,7 +42,7 @@ export default function PoiDetail() {
           <div className="row">
             <div className="col-12">
               <Link className="btn btn-primary mb-1" to={"/buyticket/" + "P/" + poi.id} role="button">Acquista un Biglietto</Link>{' '}
-              <a className="btn btn-primary mb-1" href="map.php?lat=<?php echo $row['Latitudine'] ?>&lng=<?php echo $row['Longitudine'] ?>" role="button">Mostra sulla mappa</a>{' '}
+              <Link className="btn btn-primary mb-1" to={"/" + poi.id} role="button">Mostra sulla mappa</Link>{' '}
               <a className="btn btn-primary mb-1" href={"https://www.google.com/maps/dir/?api=1&destination=" + poi.latitudine + "," + poi.longitudine + "&travelmode=walking"} role="button">Direzioni</a>
             </div>
           </div>

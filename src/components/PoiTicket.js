@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { db } from '../firebaseConfig'
+import { auth, db } from '../firebaseConfig'
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 
 export default function PoiTicket({ data }) {
@@ -33,6 +33,7 @@ export default function PoiTicket({ data }) {
     }
 
     const res = {
+      uid: auth.currentUser.uid,
       nomePoi: data.nome,
       nomeEvento: null,
       id: index,

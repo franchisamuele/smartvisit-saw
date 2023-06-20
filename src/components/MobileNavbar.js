@@ -1,4 +1,5 @@
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+import { auth } from '../firebaseConfig'
 
 export default function MobileNavbar() {
   return (
@@ -19,10 +20,10 @@ export default function MobileNavbar() {
         <i className="material-icons nav__icon">local_activity</i>
         <span className="nav__text">Biglietti</span>
       </NavLink>
-      <NavLink className="nav__link" to="./TODO">
+      <Link className="nav__link" onClick={() => auth.signOut()}>
         <i className="material-icons nav__icon">account_circle</i>
-        <span className="nav__text">Logout TODO</span>
-      </NavLink>
+        <span className="nav__text">Logout</span>
+      </Link>
     </nav>
   );
 }

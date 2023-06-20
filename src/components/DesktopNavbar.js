@@ -2,6 +2,7 @@ import { Link, NavLink } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { auth } from '../firebaseConfig'
 
 export default function DesktopNavbar() {
   return (
@@ -15,7 +16,7 @@ export default function DesktopNavbar() {
           <NavLink className="nav-link" to="./tickets">Biglietti</NavLink>
         </Nav>
         <Nav>
-          <NavLink className="nav-link justify-content-end" to="TODO">Logout</NavLink>
+          <Link className="nav-link justify-content-end" onClick={() => auth.signOut()}>Logout</Link>
         </Nav>
       </Container>
     </Navbar>

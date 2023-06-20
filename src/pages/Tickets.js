@@ -1,12 +1,13 @@
 import Ticket from '../components/Ticket';
 import { useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, getDocs, query, where } from 'firebase/firestore'
+import { auth } from '../firebaseConfig';
 
 export default function Tickets() {
   const [tickets, setTickets] = useState([]);
   
-  const docRef = collection(db, 'tickets');
+  const docRef = query(collection(db, 'tickets'), where('uid', '==', auth.currentUser.uid));
 
   const sortDate = (a, b) => {
     return b.data.seconds - a.data.seconds;
@@ -26,6 +27,11 @@ export default function Tickets() {
   return (
     <div className="container mt-3 mb-3">
       <h1 className="mb-1 text-center">I MIEI BIGLIETTI</h1>
+      <div>
+        <img referrerpolicy="no-referrer" src={auth.currentUser.photoURL} /><br />
+        Nome: {auth.currentUser.displayName}<br />
+        Email: {auth.currentUser.email}
+      </div>
       <div className="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
         {tickets.map((ticket) => {
           return (<Ticket

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { db } from '../firebaseConfig'
+import { auth, db } from '../firebaseConfig'
 import { collection, addDoc, doc, getDoc } from "firebase/firestore";
 
 export default function EventTicket({ data }) {
@@ -14,6 +14,7 @@ export default function EventTicket({ data }) {
     e.preventDefault();
 
     const res = {
+      uid: auth.currentUser.uid,
       nomePoi: data.nomePoi,
       nomeEvento: data.nome,
       idCollegato: index,

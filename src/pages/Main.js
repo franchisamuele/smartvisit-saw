@@ -7,12 +7,23 @@ import Events from './Events'
 import Tickets from './Tickets'
 import BuyTicket from './BuyTicket'
 import NoPage from './NoPage'
+import LoginPage from './LoginPage'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'jquery/dist/jquery.min.js'
 import 'bootstrap/dist/js/bootstrap.min.js'
+import { auth } from '../firebaseConfig'
+import { useEffect, useState } from 'react';
 
 export default function Main() {
-  return (
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      setUser(user);
+    });
+  }, []);
+
+  return user ? (
     <BrowserRouter>
       <Navbar />
       <Routes>
@@ -25,5 +36,7 @@ export default function Main() {
         <Route path="*" element={<NoPage />} />
       </Routes>
     </BrowserRouter>
+  ) : (
+    <LoginPage />
   );
 }

@@ -6,7 +6,7 @@ import { auth } from '../firebaseConfig';
 
 export default function Tickets() {
   const [tickets, setTickets] = useState([]);
-  
+
   const docRef = query(collection(db, 'tickets'), where('uid', '==', auth.currentUser.uid));
 
   const sortDate = (a, b) => {
@@ -17,20 +17,24 @@ export default function Tickets() {
     const getTickets = async () => {
 
       const docSnap = await getDocs(docRef);
-      setTickets( (docSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id }))).sort(sortDate) );
+      setTickets((docSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id }))).sort(sortDate));
 
     };
-    
+
     getTickets();
-  }, []);
-  
+  }, [docRef]);
+
   return (
     <div className="container mt-3 mb-3">
-      <h1 className="mb-1 text-center">I MIEI BIGLIETTI</h1>
-      <div>
-        <img referrerpolicy="no-referrer" src={auth.currentUser.photoURL} /><br />
-        Nome: {auth.currentUser.displayName}<br />
-        Email: {auth.currentUser.email}
+      <h1 className="mb-4 text-center">I MIEI BIGLIETTI</h1>
+      <div className='text-center'>
+        <div>
+          <img className="rounded-circle mb-3" referrerpolicy="no-referrer" src={auth.currentUser.photoURL} /><br />
+          <p>
+            Nome: {auth.currentUser.displayName}<br />
+            Email: {auth.currentUser.email}
+          </p>
+        </div>
       </div>
       <div className="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
         {tickets.map((ticket) => {

@@ -23,7 +23,7 @@ export default function PoiDetail() {
     };
 
     getData();
-  }, []);
+  }, [docRef]);
 
   return poi ? (
     <>

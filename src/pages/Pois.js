@@ -17,7 +17,7 @@ export default function Pois() {
     };
 
     getPois();
-  }, []);
+  }, [docRef]);
 
   return (
     <div className="container mt-1 mb-3">

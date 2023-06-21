@@ -1,13 +1,24 @@
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
-import { doc, getDoc } from 'firebase/firestore'
+import { deleteDoc, doc, getDoc } from 'firebase/firestore'
 import LoadingSpinner from '../components/LoadingSpinner'
+import ModifyDelete from '../components/ModifyDelete';
+import { GlobalStateContext } from '../App';
 
 export default function PoiDetail() {
+  const { globalState } = useContext(GlobalStateContext);
   const [poi, setPoi] = useState(null);
   const { poiIndex } = useParams();
   const navigate = useNavigate();
+
+  async function deletePoi() {
+    const message = "Sei davvero sicuro di voler eliminare il punto di interesse?\nQuesta azione è irreversibile!";
+    if (window.confirm(message)) {
+      await deleteDoc(doc(db, "poi", poiIndex));
+      navigate("/pointsOfInterest");
+    }
+  }
 
   useEffect(() => {
     const docRef = doc(db, 'poi', poiIndex);
@@ -40,7 +51,7 @@ export default function PoiDetail() {
 
         <div className="container mb-3">
           <div className="row">
-            <div className="col-12">
+            <div className="col-12 mb-2">
               {poi.prezzoBiglietto ? (
                 <>
                   <Link className="btn btn-primary mb-1" to={"/buyticket/" + "P/" + poi.id} role="button">Acquista un Biglietto</Link>{' '}
@@ -50,8 +61,12 @@ export default function PoiDetail() {
               <a className="btn btn-primary mb-1" href={"https://www.google.com/maps/dir/?api=1&destination=" + poi.latitudine + "," + poi.longitudine + "&travelmode=walking"} role="button">Direzioni</a>
             </div>
           </div>
-        </div>
 
+          {/* SOLO AMMINISTRATORE */}
+          {globalState.admin ? <ModifyDelete id={poi.id} deletePoi={deletePoi} /> : null}
+          {/* SOLO AMMINISTRATORE */}
+
+        </div>
       </div>
     </>
   ) : (

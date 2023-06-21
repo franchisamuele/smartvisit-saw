@@ -10,19 +10,26 @@ import NoPage from './NoPage'
 import LoginPage from './LoginPage'
 import AdminPoi from './AdminPoi';
 import AdminEvent from './AdminEvent';
-import { auth } from '../firebaseConfig'
-import { useEffect, useState } from 'react';
+import { auth, isAdmin } from '../firebaseConfig'
+import { useContext, useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'jquery/dist/jquery.min.js';
 import 'popper.js/dist/umd/popper.min.js';
+import { GlobalStateContext } from '../App';
 
 export default function Main() {
   const [user, setUser] = useState(null);
+  const { globalState, setGlobalState } = useContext(GlobalStateContext);
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       setUser(user);
+
+      if (user) {
+        isAdmin(user.uid)
+          .then((result) => setGlobalState({ admin: result }));
+      }
     });
   }, []);
 
@@ -38,10 +45,15 @@ export default function Main() {
         <Route path="/buyticket/:ticketType/:index" element={<BuyTicket />} />
 
         {/* SOLO ADMIN */}
-        <Route path="/insertPoi" element={<AdminPoi />} />
-        <Route path="/insertEvent" element={<AdminEvent />} />
+        {globalState.admin ? (
+          <>
+            <Route path="/insertPoi/:poiIndex?" element={<AdminPoi />} />
+            <Route path="/insertEvent" element={<AdminEvent />} />
+          </>
+        ) : null}
         {/* SOLO ADMIN */}
 
+        <Route path="/NoPage" element={<NoPage />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </BrowserRouter>

@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from 'firebase/firestore'
+import { doc, getDoc, getFirestore } from 'firebase/firestore'
 import { getAuth, GoogleAuthProvider } from 'firebase/auth'
 
 const firebaseConfig = {
@@ -17,3 +17,10 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const provider = new GoogleAuthProvider();
+
+export async function isAdmin(uid) {
+  const docRef = doc(db, 'admin', uid);
+  const docSnap = await getDoc(docRef);
+
+  return docSnap.exists();
+}

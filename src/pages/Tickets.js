@@ -1,11 +1,13 @@
 import Ticket from '../components/Ticket';
 import PannelloAmministratore from '../components/PannelloAmministratore';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { auth } from '../firebaseConfig';
+import { GlobalStateContext } from '../App';
 
 export default function Tickets() {
+  const { globalState } = useContext(GlobalStateContext);
   const [tickets, setTickets] = useState([]);
   const [expiredTickets, setExpiredTickets] = useState([]);
 
@@ -56,7 +58,10 @@ export default function Tickets() {
             Nome: {auth.currentUser.displayName}<br />
             Email: {auth.currentUser.email}
           </p>
-          <PannelloAmministratore />
+
+          {/* SOLO AMMINISTRATORE */}
+          {globalState.admin ? <PannelloAmministratore /> : null}
+          {/* SOLO AMMINISTRATORE */}
         </div>
       </div>
 
@@ -73,10 +78,11 @@ export default function Tickets() {
         })}
       </div>
 
-
-      <div className='w-100 text-center'>
-        <button onClick={toggleExpired} className="btn btn-secondary">{showExpired ? "Nascondi" : "Mostra"} biglietti scaduti</button>
-      </div>
+      {expiredTickets.length > 0 ? (
+        <div className='w-100 text-center'>
+          <button onClick={toggleExpired} className="btn btn-secondary">{showExpired ? "Nascondi" : "Mostra"} biglietti scaduti</button>
+        </div>
+      ) : null}
 
       {showExpired ? (
         <div className="mt-3 row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">

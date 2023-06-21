@@ -1,13 +1,24 @@
 import { signInWithRedirect } from 'firebase/auth';
 import { auth, provider } from '../firebaseConfig'
+import { useState } from 'react';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function LoginPage() {
+  const [isLogged, setIsLogged] = useState(false);
 
   function handleLogin() {
-    signInWithRedirect(auth, provider);
+    signInWithRedirect(auth, provider)
+      .catch(() => {
+        setIsLogged(false);
+        window.alert("Errore in fase di autenticazione!");
+      });
+
+    setIsLogged(true);
   }
 
-  return (
+  return isLogged ? (
+    <LoadingSpinner />
+  ) : (
     <>
       <div id="login-page">
       <div className="d-flex justify-content-center align-items-center login-container">

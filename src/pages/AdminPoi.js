@@ -1,6 +1,6 @@
-import { addDoc, collection } from "firebase/firestore";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { db } from '../firebaseConfig'
 
 export default function AdminPoi() {
@@ -13,6 +13,36 @@ export default function AdminPoi() {
   const [linkImmagine, setLinkImmagine] = useState("");
   const [prezzoBiglietto, setPrezzoBiglietto] = useState("");
 
+  const [editMode, setEditMode] = useState(false);
+  const { poiIndex } = useParams();
+  useEffect(() => {
+    if (poiIndex) { // Modifica no inserisci
+      const docRef = doc(db, 'poi', poiIndex);
+
+      const getData = async () => {
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setEditMode(true);
+          if (prezzoBiglietto)
+            setIsChecked(true);
+            
+          const poi = docSnap.data();
+
+          setNome(poi.nome);
+          setDescrizione(poi.descrizione);
+          setDataRealizzazione(poi.dataRealizzazione);
+          setLatitudine(poi.latitudine);
+          setLongitudine(poi.longitudine);
+          setLinkImmagine(poi.linkImmagine);
+          setPrezzoBiglietto(poi.prezzoBiglietto);
+        }
+      };
+
+      getData();
+    }
+  }, []);
+
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
@@ -23,14 +53,25 @@ export default function AdminPoi() {
     }
 
     const res = { nome, descrizione, dataRealizzazione, latitudine, longitudine, linkImmagine, ...(isChecked && { prezzoBiglietto }) };
-    await addDoc(collection(db, "poi"), res);
 
-    navigate('/pointsOfInterest');
+    if (!editMode) {
+      const message = "Sei sicuro di voler inserire questo poi?";
+      if (window.confirm(message)) {
+        await addDoc(collection(db, "poi"), res);
+        navigate('/pointsOfInterest');
+      }
+    } else {
+      const message = "Sei sicuro di voler modificare questo poi?";
+      if (window.confirm(message)) {
+        await updateDoc(doc(db, 'poi', poiIndex), res);
+        navigate('/pointsOfInterest');
+      }
+    }
   }
 
   return (
     <div className="container mt-3 mb-3">
-      <h1 className="mb-4 text-center">Inserimento Punti di Interesse</h1>
+      <h1 className="mb-4 text-center">{editMode ? "Modifica" : "Inserimento"} Punti di Interesse</h1>
       <form onSubmit={handleSubmit}>
         <p>Nome: <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} required></input></p>
         <p>Descrizione: <textarea className="w-100" rows="10" value={descrizione} onChange={(e) => setDescrizione(e.target.value)} required></textarea></p>
@@ -46,10 +87,10 @@ export default function AdminPoi() {
         <p>
           {isChecked ? (
             <>Prezzo biglietto: <input type="number" value={prezzoBiglietto} onChange={(e) => setPrezzoBiglietto(e.target.value)} required></input></>
-        ) : null}
+          ) : null}
         </p>
 
-        <input className="btn btn-primary" type="submit" value="Inserisci"></input>
+        <input className="btn btn-primary" type="submit" value={editMode ? "Modifica" : "Inserisci"}></input>
       </form>
     </div>
 

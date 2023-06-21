@@ -2,13 +2,14 @@ import Event from '../components/Event';
 import { useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore'
-import { useNavigate } from 'react-router-dom';
 
 export default function Events() {
-  const navigate = useNavigate();
   const [events, setEvents] = useState([]);
-  
+  const [shouldReloadEvents, setShouldReloadEvents] = useState(false);
+
   useEffect(() => {
+    setShouldReloadEvents(false);
+
     const docRef = collection(db, 'events');
 
     const getEvents = async () => {
@@ -19,7 +20,7 @@ export default function Events() {
     };
     
     getEvents();
-  }, []);
+  }, [shouldReloadEvents]);
 
   return (
     <div className="container mt-1 mb-3">
@@ -30,6 +31,7 @@ export default function Events() {
             nome={event.nome}
             nomePoi={event.nomePoi}
             linkImmagine={event.linkImmagine}
+            setShouldReloadEvents={setShouldReloadEvents}
           />);
         })}
       </div>

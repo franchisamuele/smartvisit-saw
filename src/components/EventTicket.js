@@ -10,13 +10,27 @@ export default function EventTicket({ data }) {
   const [numeroPersone, setNumeroPersone] = useState(1);
   const currentPrice = data.prezzoBiglietto * numeroPersone;
 
+  const [poi, setPoi] = useState(null);
+  useEffect(() => {
+    const docRef = doc(db, 'poi', data.idPoi);
+
+    const getData = async () => {
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setPoi({ ...docSnap.data(), id: docSnap.id });
+      }
+    };
+
+    getData();
+  }, []);
+
   async function handleSubmit(e) {
     e.preventDefault();
 
     const res = {
       uid: auth.currentUser.uid,
-      idPoi: data.id,
-      nomePoi: data.nomePoi,
+      idPoi: data.idPoi,
       nomeEvento: data.nome,
       idCollegato: index,
       tipo: ticketType,
@@ -50,7 +64,7 @@ export default function EventTicket({ data }) {
       <form onSubmit={handleSubmit}>
 
         <p className="mt-3">Evento: {data.nome}</p>
-        <p className="mt-3">Luogo: {data.nomePoi}</p>
+        <p className="mt-3">Luogo: {poi ? poi.nome : "Caricamento..."}</p>
         <p>Prezzo a persona: {data.prezzoBiglietto} €</p>
         <p>Data e ora: {getFormattedDate(data.dataOra.seconds * 1000)}</p>
         <p>Persone: <input type="number" value={numeroPersone} onChange={(e) => setNumeroPersone(e.target.value)} placeholder="Numero persone" required></input></p>

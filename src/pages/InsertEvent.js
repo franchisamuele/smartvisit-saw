@@ -1,15 +1,31 @@
-import { addDoc, collection } from "firebase/firestore";
-import { useState } from "react";
+import { Timestamp, addDoc, collection, getDocs } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from '../firebaseConfig'
 
 export default function InsertEvent() {
   const [idPoi, setIdPoi] = useState("");
   const [nome, setNome] = useState("");
-  const [nomePoi, setNomePoi] = useState("");
   const [dataOra, setDataOra] = useState("");
   const [linkImmagine, setLinkImmagine] = useState("");
   const [prezzoBiglietto, setPrezzoBiglietto] = useState("");
+
+  const [pois, setPois] = useState([]);
+
+  useEffect(() => {
+    const docRef = collection(db, 'poi');
+
+    const getPois = async () => {
+      const poiArray = [];
+
+      const docSnap = await getDocs(docRef);
+      docSnap.docs.forEach((doc) => (poiArray.push({ ...doc.data(), id: doc.id })));
+
+      setPois(poiArray.sort((a, b) => a.nome.localeCompare(b.nome)));
+    };
+
+    getPois();
+  }, []);
 
   const navigate = useNavigate();
 
@@ -20,7 +36,7 @@ export default function InsertEvent() {
       return alert("Il prezzo del biglietto deve essere >= 1!");
     }
 
-    const res = { idPoi, nome, nomePoi, dataOra, linkImmagine, prezzoBiglietto };
+    const res = { idPoi, nome, dataOra: Timestamp.fromDate(new Date(dataOra)), linkImmagine, prezzoBiglietto };
 
     const message = "Sei sicuro di voler inserire questo evento?";
     if (window.confirm(message)) {
@@ -34,9 +50,18 @@ export default function InsertEvent() {
       <h1 className="mb-4 text-center">Inserimento Eventi</h1>
       <form onSubmit={handleSubmit}>
         <p>Nome: <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} required></input></p>
-        <p>Nome: <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} required></input></p>
-        <p>Nome: <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} required></input></p>
-        <p>Nome: <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} required></input></p>
+        <p>
+          Punto di interesse:{' '}
+          <select required onChange={(e) => setIdPoi(e.target.value)}>
+            <option disabled selected value=""> -- seleziona un poi -- </option>
+            {pois.map((poi) => {
+              return (
+                <option value={poi.id}>{poi.nome}</option>
+              );
+            })}
+          </select>
+        </p>
+        <p>Data e ora: <input type="datetime-local" value={dataOra} onChange={(e) => setDataOra(e.target.value)} required></input></p>
         <p>Link immagine: <input type="text" value={linkImmagine} onChange={(e) => setLinkImmagine(e.target.value)} required></input></p>
         <p>Prezzo biglietto: <input type="number" value={prezzoBiglietto} onChange={(e) => setPrezzoBiglietto(e.target.value)} required></input></p>
 

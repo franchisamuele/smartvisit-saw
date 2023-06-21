@@ -2,7 +2,7 @@ import Ticket from '../components/Ticket';
 import PannelloAmministratore from '../components/PannelloAmministratore';
 import { useContext, useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
-import { collection, getDocs, query, where } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore'
 import { auth } from '../firebaseConfig';
 import { GlobalStateContext } from '../App';
 
@@ -22,6 +22,32 @@ export default function Tickets() {
   const ascendingSortDate = (a, b) => {
     return b.data.seconds - a.data.seconds;
   };
+
+  async function getNomePoi(idPoi) {
+    const docRef = doc(db, 'poi', idPoi);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data().nome;
+    } else {
+      return "Errore";
+    }
+  }
+
+  const [promises, setPromises] = useState([]);
+
+  useEffect(() => {
+    const promises = tickets.map((ticket) => getNomePoi(ticket.idPoi));
+    setPromises(promises);
+  }, [tickets]);
+
+  const [resolvedPromises, setResolvedPromises] = useState([]);
+
+  useEffect(() => {
+    Promise.all(promises).then((resolvedPromises) => {
+      setResolvedPromises(resolvedPromises);
+    });
+  }, [promises]);
 
   useEffect(() => {
     const docRef = query(collection(db, 'tickets'), where('uid', '==', auth.currentUser.uid));
@@ -66,16 +92,16 @@ export default function Tickets() {
       </div>
 
       <div className="mb-3 row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
-        {tickets.map((ticket) => {
-          return (<Ticket
+        {tickets.map((ticket, index) => (
+          <Ticket
             id={ticket.id}
             idPoi={ticket.idPoi}
-            nomePoi={ticket.nomePoi}
+            nomePoi={resolvedPromises[index]}
             nomeEvento={ticket.nomeEvento}
             prezzoTotale={ticket.prezzoTotale}
             data={ticket.data}
-          />);
-        })}
+          />
+        ))}
       </div>
 
       {expiredTickets.length > 0 ? (
@@ -86,15 +112,16 @@ export default function Tickets() {
 
       {showExpired ? (
         <div className="mt-3 row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
-          {expiredTickets.map((ticket) => {
-            return (<Ticket
+          {expiredTickets.map((ticket, index) => (
+            <Ticket
               id={ticket.id}
-              nomePoi={ticket.nomePoi}
+              idPoi={ticket.idPoi}
+              nomePoi={resolvedPromises[index]}
               nomeEvento={ticket.nomeEvento}
               prezzoTotale={ticket.prezzoTotale}
               data={ticket.data}
-            />);
-          })}
+            />
+          ))}
         </div>
       ) : null}
 

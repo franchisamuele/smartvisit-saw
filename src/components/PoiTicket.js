@@ -34,6 +34,7 @@ export default function PoiTicket({ data }) {
 
     const res = {
       uid: auth.currentUser.uid,
+      idPoi: data.id,
       nomePoi: data.nome,
       nomeEvento: null,
       id: index,

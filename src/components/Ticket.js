@@ -1,5 +1,6 @@
+import { Link } from "react-router-dom";
 
-export default function Ticket({ id, nomePoi, nomeEvento, prezzoTotale, data }) {
+export default function Ticket({ id, idPoi, nomePoi, nomeEvento, prezzoTotale, data }) {
   function getFormattedDate(timestamp) {
     // Crea un oggetto Date utilizzando il timestamp
     const date = new Date(timestamp);
@@ -21,7 +22,7 @@ export default function Ticket({ id, nomePoi, nomeEvento, prezzoTotale, data }) 
       <div className="card">
         <div className="card-body">
             <h2>Biglietto # {id.slice(0,5)}</h2>
-            <h6>Luogo: {nomePoi}</h6>
+            <h6>Luogo: <Link to={"/pointsOfInterest/" + idPoi}>{nomePoi}</Link></h6>
             {nomeEvento ? (<h6>Evento: {nomeEvento}</h6>) : ""}
             <h6>Prezzo totale: {prezzoTotale} €</h6>
             <h6>{nomeEvento ? "Data e ora: " : "Data: "} {getFormattedDate(data.seconds * 1000)}</h6>

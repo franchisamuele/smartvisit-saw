@@ -15,6 +15,7 @@ export default function EventTicket({ data }) {
 
     const res = {
       uid: auth.currentUser.uid,
+      idPoi: data.id,
       nomePoi: data.nomePoi,
       nomeEvento: data.nome,
       idCollegato: index,

@@ -64,6 +64,7 @@ export default function Tickets() {
         {tickets.map((ticket) => {
           return (<Ticket
             id={ticket.id}
+            idPoi={ticket.idPoi}
             nomePoi={ticket.nomePoi}
             nomeEvento={ticket.nomeEvento}
             prezzoTotale={ticket.prezzoTotale}

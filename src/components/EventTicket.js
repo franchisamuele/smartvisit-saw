@@ -32,7 +32,7 @@ export default function EventTicket({ data }) {
       uid: auth.currentUser.uid,
       idPoi: data.idPoi,
       nomeEvento: data.nome,
-      idCollegato: index,
+      idEvento: index,
       tipo: ticketType,
       data: data.dataOra,
       persone: numeroPersone,

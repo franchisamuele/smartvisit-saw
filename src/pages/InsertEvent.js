@@ -52,8 +52,8 @@ export default function InsertEvent() {
         <p>Nome: <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} required></input></p>
         <p>
           Punto di interesse:{' '}
-          <select required onChange={(e) => setIdPoi(e.target.value)}>
-            <option disabled selected value=""> -- seleziona un poi -- </option>
+          <select required defaultValue="" onChange={(e) => setIdPoi(e.target.value)}>
+            <option disabled value=""> -- seleziona un poi -- </option>
             {pois.map((poi) => {
               return (
                 <option value={poi.id}>{poi.nome}</option>

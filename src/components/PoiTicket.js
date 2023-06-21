@@ -4,7 +4,7 @@ import { auth, db } from '../firebaseConfig'
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 
 export default function PoiTicket({ data }) {
-  const { ticketType, index } = useParams();
+  const { ticketType, index: poiIndex } = useParams();
   const navigate = useNavigate();
 
   const [numeroPersone, setNumeroPersone] = useState(1);
@@ -34,10 +34,8 @@ export default function PoiTicket({ data }) {
 
     const res = {
       uid: auth.currentUser.uid,
-      idPoi: data.id,
-      nomePoi: data.nome,
-      nomeEvento: null,
-      id: index,
+      idPoi: poiIndex,
+      idEvento: null,
       tipo: ticketType,
       data: Timestamp.fromDate(new Date(inputDate)),
       persone: numeroPersone,

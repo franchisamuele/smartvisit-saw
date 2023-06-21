@@ -23,32 +23,6 @@ export default function Tickets() {
     return b.data.seconds - a.data.seconds;
   };
 
-  async function getNomePoi(idPoi) {
-    const docRef = doc(db, 'poi', idPoi);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      return docSnap.data().nome;
-    } else {
-      return "Errore";
-    }
-  }
-
-  const [promises, setPromises] = useState([]);
-
-  useEffect(() => {
-    const promises = tickets.map((ticket) => getNomePoi(ticket.idPoi));
-    setPromises(promises);
-  }, [tickets]);
-
-  const [resolvedPromises, setResolvedPromises] = useState([]);
-
-  useEffect(() => {
-    Promise.all(promises).then((resolvedPromises) => {
-      setResolvedPromises(resolvedPromises);
-    });
-  }, [promises]);
-
   useEffect(() => {
     const docRef = query(collection(db, 'tickets'), where('uid', '==', auth.currentUser.uid));
 
@@ -57,15 +31,28 @@ export default function Tickets() {
       const expiredTicketsTemp = [];
 
       const docSnap = await getDocs(docRef);
-      docSnap.docs.map((doc) => {
-        const currTicket = { ...doc.data(), id: doc.id };
 
-        var currTimestamp = Math.floor(new Date().setHours(0, 0, 0, 0) / 1000);
+      const promises = docSnap.docs.map(async (docum) => {
+        const poiTrovato = await getDoc(doc(db, 'poi', docum.data().idPoi));
+        const nomePoi = poiTrovato.exists() ? poiTrovato.data().nome : "Poi non trovato";
+  
+        const isEvent = docum.data().idEvento;
+        let nomeEvento = null;
+        if (isEvent) {
+          const eventoTrovato = await getDoc(doc(db, 'events', docum.data().idEvento));
+          nomeEvento = eventoTrovato.exists() ? eventoTrovato.data().nome : "Evento non trovato";
+        }
+  
+        const currTicket = { ...docum.data(), id: docum.id, nomePoi, ...(isEvent && { nomeEvento }) };
+  
+        const currTimestamp = Math.floor(new Date().setHours(0, 0, 0, 0) / 1000);
         if (currTimestamp < currTicket.data.seconds)
           ticketsTemp.push(currTicket);
         else
           expiredTicketsTemp.push(currTicket);
       });
+  
+      await Promise.all(promises);
 
       setTickets(ticketsTemp.sort(descendingSortDate));
       setExpiredTickets(expiredTicketsTemp.sort(ascendingSortDate));
@@ -92,11 +79,11 @@ export default function Tickets() {
       </div>
 
       <div className="mb-3 row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
-        {tickets.map((ticket, index) => (
+        {tickets.map((ticket) => (
           <Ticket
             id={ticket.id}
             idPoi={ticket.idPoi}
-            nomePoi={resolvedPromises[index]}
+            nomePoi={ticket.nomePoi}
             nomeEvento={ticket.nomeEvento}
             prezzoTotale={ticket.prezzoTotale}
             data={ticket.data}
@@ -112,11 +99,11 @@ export default function Tickets() {
 
       {showExpired ? (
         <div className="mt-3 row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
-          {expiredTickets.map((ticket, index) => (
+          {expiredTickets.map((ticket) => (
             <Ticket
               id={ticket.id}
               idPoi={ticket.idPoi}
-              nomePoi={resolvedPromises[index]}
+              nomePoi={ticket.nomePoi}
               nomeEvento={ticket.nomeEvento}
               prezzoTotale={ticket.prezzoTotale}
               data={ticket.data}

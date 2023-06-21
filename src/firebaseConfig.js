@@ -3,12 +3,12 @@ import { getFirestore } from 'firebase/firestore'
 import { getAuth, GoogleAuthProvider } from 'firebase/auth'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCItGrIlF3d4t1Hzsw3Js316CKsSFgfYng",
-  authDomain: "smartvisit-saw.firebaseapp.com",
-  projectId: "smartvisit-saw",
-  storageBucket: "smartvisit-saw.appspot.com",
-  messagingSenderId: "1006404951082",
-  appId: "1:1006404951082:web:c1531ca241011db169f753"
+  apiKey: "AIzaSyCXVdRkLbWiJ144sRRFUIAPxCY5bfMZbvQ",
+  authDomain: "smartvisit-pisa.firebaseapp.com",
+  projectId: "smartvisit-pisa",
+  storageBucket: "smartvisit-pisa.appspot.com",
+  messagingSenderId: "6445253746",
+  appId: "1:6445253746:web:4b34da90d32ae688446eeb"
 };
 
 // Create the connection with Firebase

@@ -8,8 +8,8 @@ import Tickets from './Tickets'
 import BuyTicket from './BuyTicket'
 import NoPage from './NoPage'
 import LoginPage from './LoginPage'
-import AdminPoi from './AdminPoi';
-import AdminEvent from './AdminEvent';
+import InsertPoi from './InsertPoi';
+import InsertEvent from './InsertEvent';
 import { auth, isAdmin } from '../firebaseConfig'
 import { useContext, useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -47,8 +47,8 @@ export default function Main() {
         {/* SOLO ADMIN */}
         {globalState.admin ? (
           <>
-            <Route path="/insertPoi/:poiIndex?" element={<AdminPoi />} />
-            <Route path="/insertEvent" element={<AdminEvent />} />
+            <Route path="/insertPoi/:poiIndex?" element={<InsertPoi />} />
+            <Route path="/insertEvent" element={<InsertEvent />} />
           </>
         ) : null}
         {/* SOLO ADMIN */}

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { db } from '../firebaseConfig'
 
-export default function AdminPoi() {
+export default function InsertPoi() {
   const [isChecked, setIsChecked] = useState(false);
   const [nome, setNome] = useState("");
   const [descrizione, setDescrizione] = useState("");

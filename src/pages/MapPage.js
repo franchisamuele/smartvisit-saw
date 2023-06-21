@@ -6,8 +6,8 @@ export default function MapPage() {
   return (
     <MapContainer
       style={{ height: "calc(100vh - 56px)" }}
-      center={[41.870139, 13.045694]}
-      zoom={6}
+      center={[43.719, 10.401510]}
+      zoom={15}
     >
       <Map />
     </MapContainer>

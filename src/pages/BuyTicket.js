@@ -36,7 +36,7 @@ export default function BuyTicket() {
       navigate('/NoPage');
     else
       getData();
-  }, [docRef]);
+  }, []);
 
   return (
     ticketType === 'P' ? (

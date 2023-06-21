@@ -23,11 +23,11 @@ export default function PoiDetail() {
     };
 
     getData();
-  }, [docRef]);
+  }, []);
 
   return poi ? (
     <>
-      <img src={"/images/Photos/" + poi.linkImmagine} className="img-fluid w-100" alt={"Immagine: " + (poi ? poi.nome : "404 Not found")}></img>
+      <img src={"/images/Photos/" + poi.linkImmagine} className="img-fluid w-100" style={{ maxWidth: 1000, display: "block", margin: "0 auto" }} alt={"Immagine: " + (poi ? poi.nome : "404 Not found")}></img>
       <div className="container mt-3">
         <h1 className="mt-4 text-center">{poi.nome}</h1>
         <p>Data realizzazione: {poi.dataRealizzazione}<br />

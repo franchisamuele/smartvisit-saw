@@ -1,5 +1,5 @@
 import "leaflet/dist/leaflet.css";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { Icon } from 'leaflet'
 import LocationMarker from './LocationMarker'
 import LocationControl from './LocationControl'
@@ -58,12 +58,6 @@ export default function Map() {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      {/* User potition */}
-      <LocationMarker
-        icon={myPositionIcon}
-        position={position}
-      />
-
       {
         pois.map((poi) => {
           return (
@@ -75,6 +69,12 @@ export default function Map() {
           );
         })
       }
+
+      {/* User potition */}
+      <LocationMarker
+        icon={myPositionIcon}
+        position={position}
+      />
 
       <LocationControl setPosition={setPosition} />
     </>

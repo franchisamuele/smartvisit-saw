@@ -126,3 +126,5 @@
     background: url('../public/images/Photos/photo1.jpg')
 }
 /* LOGIN STYLE */
+
+.markercluster-map { height: 90vh; }

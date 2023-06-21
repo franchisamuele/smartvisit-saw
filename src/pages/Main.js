@@ -8,6 +8,8 @@ import Tickets from './Tickets'
 import BuyTicket from './BuyTicket'
 import NoPage from './NoPage'
 import LoginPage from './LoginPage'
+import AdminPoi from './AdminPoi';
+import AdminEvent from './AdminEvent';
 import { auth } from '../firebaseConfig'
 import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -34,6 +36,12 @@ export default function Main() {
         <Route path="/events" element={<Events />} />
         <Route path="/tickets" element={<Tickets />} />
         <Route path="/buyticket/:ticketType/:index" element={<BuyTicket />} />
+
+        {/* SOLO ADMIN */}
+        <Route path="/insertPoi" element={<AdminPoi />} />
+        <Route path="/insertEvent" element={<AdminEvent />} />
+        {/* SOLO ADMIN */}
+
         <Route path="*" element={<NoPage />} />
       </Routes>
     </BrowserRouter>

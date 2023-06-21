@@ -1,4 +1,5 @@
 import Ticket from '../components/Ticket';
+import PannelloAmministratore from '../components/PannelloAmministratore';
 import { useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
 import { collection, getDocs, query, where } from 'firebase/firestore'
@@ -22,18 +23,19 @@ export default function Tickets() {
     };
 
     getTickets();
-  }, [docRef]);
+  }, []);
 
   return (
     <div className="container mt-3 mb-3">
       <h1 className="mb-4 text-center">I MIEI BIGLIETTI</h1>
       <div className='text-center'>
         <div>
-          <img className="rounded-circle mb-3" referrerpolicy="no-referrer" src={auth.currentUser.photoURL} /><br />
+          <img className="rounded-circle mb-3" referrerPolicy="no-referrer" src={auth.currentUser.photoURL} /><br />
           <p>
             Nome: {auth.currentUser.displayName}<br />
             Email: {auth.currentUser.email}
           </p>
+          <PannelloAmministratore />
         </div>
       </div>
       <div className="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">

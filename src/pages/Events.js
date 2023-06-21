@@ -19,7 +19,7 @@ export default function Events() {
     };
     
     getEvents();
-  }, [docRef]);
+  }, []);
 
   return (
     <div className="container mt-1 mb-3">

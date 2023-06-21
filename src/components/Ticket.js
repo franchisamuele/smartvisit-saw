@@ -12,7 +12,8 @@ export default function Ticket({ id, nomePoi, nomeEvento, prezzoTotale, data }) 
     const minutes = date.getMinutes().toString().padStart(2, '0');;
 
     // Costruisci la stringa di output nel formato desiderato
-    return `${day}/${month}/${year} ${hours}:${minutes}`;
+    return nomeEvento ? `${day}/${month}/${year} ${hours}:${minutes}` :
+                        `${day}/${month}/${year}`;
   }
   
   return (
@@ -23,7 +24,7 @@ export default function Ticket({ id, nomePoi, nomeEvento, prezzoTotale, data }) 
             <h6>Luogo: {nomePoi}</h6>
             {nomeEvento ? (<h6>Evento: {nomeEvento}</h6>) : ""}
             <h6>Prezzo totale: {prezzoTotale} €</h6>
-            <h6>Data e ora: {getFormattedDate(data.seconds * 1000)}</h6>
+            <h6>{nomeEvento ? "Data e ora: " : "Data: "} {getFormattedDate(data.seconds * 1000)}</h6>
         </div>
       </div>
     </div>

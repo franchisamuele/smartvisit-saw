@@ -55,7 +55,7 @@ export default function PoiTicket({ data }) {
         <p className="mt-3">Luogo: {data.nome}</p>
         <p>Prezzo a persona: {data.prezzoBiglietto} €</p>
         <p>Data: <input type="date" value={inputDate} onChange={(e) => setInputDate(e.target.value)} min={getCurrentDate()} required></input></p>
-        <p>Persone: <input type="text" value={numeroPersone} onChange={(e) => setNumeroPersone(e.target.value)} placeholder="Numero persone" required></input></p>
+        <p>Persone: <input type="number" value={numeroPersone} onChange={(e) => setNumeroPersone(e.target.value)} placeholder="Numero persone" required></input></p>
 
         <p className="mt-5">Prezzo totale: {currentPrice} €</p>
 

@@ -78,7 +78,7 @@ export default function InsertPoi() {
         <p>Anno realizzazione: <input type="number" value={dataRealizzazione} onChange={(e) => setDataRealizzazione(e.target.value)} required></input></p>
         <p>Latitudine: <input type="number" value={latitudine} onChange={(e) => setLatitudine(e.target.value)} required></input></p>
         <p>Longitudine: <input type="number" value={longitudine} onChange={(e) => setLongitudine(e.target.value)} required></input></p>
-        <p>LinkImmagine: <input type="text" value={linkImmagine} onChange={(e) => setLinkImmagine(e.target.value)} required></input></p>
+        <p>Link immagine: <input type="text" value={linkImmagine} onChange={(e) => setLinkImmagine(e.target.value)} required></input></p>
 
         <p>
           <input id="prezzo" type="checkbox" checked={isChecked} onChange={() => setIsChecked(!isChecked)}></input>{' '}

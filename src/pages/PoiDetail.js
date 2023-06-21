@@ -9,9 +9,9 @@ export default function PoiDetail() {
   const { poiIndex } = useParams();
   const navigate = useNavigate();
 
-  const docRef = doc(db, 'poi', poiIndex);
-
   useEffect(() => {
+    const docRef = doc(db, 'poi', poiIndex);
+
     const getData = async () => {
       const docSnap = await getDoc(docRef);
 
@@ -31,7 +31,7 @@ export default function PoiDetail() {
       <div className="container mt-3">
         <h1 className="mt-4 text-center">{poi.nome}</h1>
         <p>Data realizzazione: {poi.dataRealizzazione}<br />
-          {poi.prezzoBiglietto ? 
+          {poi.prezzoBiglietto ?
             <>Prezzo biglietto: {poi.prezzoBiglietto} €<br /></>
             : null}
         </p>

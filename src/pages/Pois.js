@@ -6,9 +6,9 @@ import { collection, getDocs } from 'firebase/firestore'
 export default function Pois() {
   const [pois, setPois] = useState([]);
 
-  const docRef = collection(db, 'poi');
-
   useEffect(() => {
+    const docRef = collection(db, 'poi');
+
     const getPois = async () => {
 
       const docSnap = await getDocs(docRef);

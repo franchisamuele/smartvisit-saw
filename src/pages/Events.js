@@ -7,10 +7,10 @@ import { useNavigate } from 'react-router-dom';
 export default function Events() {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
-
-  const docRef = collection(db, 'events');
-
+  
   useEffect(() => {
+    const docRef = collection(db, 'events');
+
     const getEvents = async () => {
 
       const docSnap = await getDocs(docRef);

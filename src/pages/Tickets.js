@@ -7,19 +7,40 @@ import { auth } from '../firebaseConfig';
 
 export default function Tickets() {
   const [tickets, setTickets] = useState([]);
+  const [expiredTickets, setExpiredTickets] = useState([]);
 
-  const docRef = query(collection(db, 'tickets'), where('uid', '==', auth.currentUser.uid));
+  const [showExpired, setShowExpired] = useState(false);
+  function toggleExpired() {
+    setShowExpired(!showExpired);
+  };
 
-  const sortDate = (a, b) => {
+  const descendingSortDate = (a, b) => {
+    return a.data.seconds - b.data.seconds;
+  };
+  const ascendingSortDate = (a, b) => {
     return b.data.seconds - a.data.seconds;
   };
 
   useEffect(() => {
+    const docRef = query(collection(db, 'tickets'), where('uid', '==', auth.currentUser.uid));
+
     const getTickets = async () => {
+      const ticketsTemp = [];
+      const expiredTicketsTemp = [];
 
       const docSnap = await getDocs(docRef);
-      setTickets((docSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id }))).sort(sortDate));
+      docSnap.docs.map((doc) => {
+        const currTicket = { ...doc.data(), id: doc.id };
 
+        var currTimestamp = Math.floor(new Date().setHours(0, 0, 0, 0) / 1000);
+        if (currTimestamp < currTicket.data.seconds)
+          ticketsTemp.push(currTicket);
+        else
+          expiredTicketsTemp.push(currTicket);
+      });
+
+      setTickets(ticketsTemp.sort(descendingSortDate));
+      setExpiredTickets(expiredTicketsTemp.sort(ascendingSortDate));
     };
 
     getTickets();
@@ -38,7 +59,8 @@ export default function Tickets() {
           <PannelloAmministratore />
         </div>
       </div>
-      <div className="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
+
+      <div className="mb-3 row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
         {tickets.map((ticket) => {
           return (<Ticket
             id={ticket.id}
@@ -49,6 +71,26 @@ export default function Tickets() {
           />);
         })}
       </div>
+
+
+      <div className='w-100 text-center'>
+        <button onClick={toggleExpired} className="btn btn-secondary">{showExpired ? "Nascondi" : "Mostra"} biglietti scaduti</button>
+      </div>
+
+      {showExpired ? (
+        <div className="mt-3 row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
+          {expiredTickets.map((ticket) => {
+            return (<Ticket
+              id={ticket.id}
+              nomePoi={ticket.nomePoi}
+              nomeEvento={ticket.nomeEvento}
+              prezzoTotale={ticket.prezzoTotale}
+              data={ticket.data}
+            />);
+          })}
+        </div>
+      ) : null}
+
     </div>
   );
 }

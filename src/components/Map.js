@@ -28,9 +28,9 @@ export default function Map() {
 
   const map = useMap();
 
-  const docRef = collection(db, 'poi');
-
   useEffect(() => {
+    const docRef = collection(db, 'poi');
+
     const getPois = async () => {
 
       const docSnap = await getDocs(docRef);

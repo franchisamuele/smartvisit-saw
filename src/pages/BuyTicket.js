@@ -12,16 +12,16 @@ export default function BuyTicket() {
 
   const [data, setData] = useState(null);
 
-  var docRef = null;
-  if (ticketType === 'P') { // POI
-    docRef = doc(db, 'poi', index);
-  } else if (ticketType === 'E') { // EVENT 
-    docRef = doc(db, 'events', index);
-  } else {
-    navigate('/NoPage');
-  }
-
   useEffect(() => {
+    var docRef = null;
+    if (ticketType === 'P') { // POI
+      docRef = doc(db, 'poi', index);
+    } else if (ticketType === 'E') { // EVENT 
+      docRef = doc(db, 'events', index);
+    } else {
+      navigate('/NoPage');
+    }
+
     const getData = async () => {
       const docSnap = await getDoc(docRef);
 

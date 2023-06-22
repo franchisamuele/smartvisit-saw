@@ -15,19 +15,17 @@ export default function PoiDetail() {
   async function deletePoi() {
     const message = "Sei davvero sicuro di voler eliminare il punto di interesse?\nQuesta azione è irreversibile!";
     if (window.confirm(message)) {
-      await deleteDoc(doc(db, "poi", poiIndex));
+      await deleteDoc( doc(db, "poi", poiIndex) );
       navigate("/pointsOfInterest");
     }
   }
 
   useEffect(() => {
-    const docRef = doc(db, 'poi', poiIndex);
-
     const getData = async () => {
-      const docSnap = await getDoc(docRef);
+      const poiSnap = await getDoc( doc(db, 'poi', poiIndex) );
 
-      if (docSnap.exists()) {
-        setPoi({ ...docSnap.data(), id: docSnap.id });
+      if (poiSnap.exists()) {
+        setPoi({ ...poiSnap.data(), id: poiSnap.id });
       } else {
         navigate('/NoPage');
       }

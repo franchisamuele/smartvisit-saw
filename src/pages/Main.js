@@ -23,7 +23,7 @@ export default function Main() {
   const { globalState, setGlobalState } = useContext(GlobalStateContext);
 
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user);
 
       if (user) {
@@ -31,6 +31,8 @@ export default function Main() {
           .then((result) => setGlobalState({ admin: result }));
       }
     });
+
+    return unsubscribe;
   }, []);
 
   return user ? (

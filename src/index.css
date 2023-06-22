@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900');
 
+#navDesktop {
+    z-index: 10;
+}
+
 @media screen and (max-width: 767px) {
     #navDesktop {
         display: none;
@@ -32,7 +36,6 @@
     display: flex;
     overflow-x: auto;
 }
-
 .nav__link {
     display: flex;
     flex-direction: column;
@@ -49,15 +52,12 @@
     -webkit-tap-highlight-color: transparent;
     transition: background-color 0.1s ease-in-out;
 }
-
 #navPhone>.active {
     color: #0d6efd;
 }
-
 .nav__icon {
     font-size: 18px;
 }
-
 /* PHONE NAV STYLE */
 
 #root, html {
@@ -90,6 +90,7 @@
 }
 
 .spinner-container {
+    z-index: 3;
     position: fixed;
     top: 0;
     left: 0;
@@ -106,25 +107,24 @@
 
 /* LOGIN STYLE */
 .login-form {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-color: #ffffffc0;
-    border-radius: 75px;
-    padding: 7% 10%;
-}
-.login-container {
-    color: black;
-    height: 100vh;
-    width: 100%;
-}
-.btn-custom {
-    color: #fff;
-    font-size: 15px;
-    font-weight: 600;
-    min-height: 48px;
-    min-width: 230px;
-}
-#login-page {
-    background: url('../public/images/Photos/photo1.jpg')
+    border-radius: 30px;
+    padding: 30px 50px;
+    min-width: 380px;
 }
 /* LOGIN STYLE */
 
-.markercluster-map { height: 90vh; }
+/* CAROUSEL */
+.carousel-image {
+    position: absolute;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+/* CAROUSEL */

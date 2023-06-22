@@ -50,7 +50,7 @@ export default function Main() {
         {globalState.admin ? (
           <>
             <Route path="/insertPoi/:poiIndex?" element={<InsertPoi />} />
-            <Route path="/insertEvent" element={<InsertEvent />} />
+            <Route path="/insertEvent/:eventIndex?" element={<InsertEvent />} />
           </>
         ) : null}
         {/* SOLO ADMIN */}

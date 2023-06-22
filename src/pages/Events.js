@@ -7,6 +7,15 @@ export default function Events() {
   const [events, setEvents] = useState([]);
   const [shouldReloadEvents, setShouldReloadEvents] = useState(false);
 
+  async function getNomePoi(idPoi) {
+    var nomePoi = "Poi non trovato";
+    const poiSnap = await getDoc(doc(db, 'poi', idPoi));
+    if (poiSnap.exists())
+      nomePoi = poiSnap.data().nome;
+
+    return nomePoi;
+  }
+
   useEffect(() => {
     setShouldReloadEvents(false);
 
@@ -15,10 +24,17 @@ export default function Events() {
     const getEvents = async () => {
 
       const docSnap = await getDocs(docRef);
-      setEvents(docSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+
+      const eventPromises = docSnap.docs.map(async (doc) => {
+        const nomePoi = await getNomePoi(doc.data().idPoi);
+        return { ...doc.data(), id: doc.id, nomePoi };
+      });
+  
+      const resolvedEvents = await Promise.all(eventPromises);
+      setEvents(resolvedEvents);
 
     };
-    
+
     getEvents();
   }, [shouldReloadEvents]);
 

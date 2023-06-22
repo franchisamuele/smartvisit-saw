@@ -24,10 +24,11 @@ export default function Event({ id, nome, nomePoi, linkImmagine, setShouldReload
           <h6 className="card-title text-center">{nomePoi}</h6>
         </div>
         <div className="card-footer text-end">
-          <Link to={"/buyticket/" + "E/" + id} className="btn btn-primary">Acquista un Biglietto</Link>
+          <Link to={"/buyticket/" + "E/" + id} className="btn btn-primary mt-1">Acquista un Biglietto</Link>
           {globalState.admin ? (
             <>
-              {' '}<a onClick={() => deleteEvent(nome, id)} className="btn btn-danger"><i className="material-icons align-middle">delete</i></a>
+              {' '}<Link className="btn btn-warning mt-1" to={"/insertEvent/" + id}><i className="material-icons align-middle" style={{color: "white"}}>edit</i></Link>{' '}
+              {' '}<a onClick={() => deleteEvent(nome, id)} className="btn btn-danger mt-1"><i className="material-icons align-middle">delete</i></a>
             </>
           ) : null}
         </div>

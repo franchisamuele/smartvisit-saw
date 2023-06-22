@@ -1,22 +1,7 @@
 import { Link } from "react-router-dom";
+import { getFormattedDate } from "../pages/Main";
 
 export default function Ticket({ id, idPoi, nomePoi, nomeEvento, prezzoTotale, dataOra }) {
-  function getFormattedDate(timestamp) {
-    // Crea un oggetto Date utilizzando il timestamp
-    const date = new Date(timestamp);
-
-    // Estrai i componenti della data
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1; // I mesi in JavaScript sono indicizzati da 0 a 11, quindi aggiungi 1
-    const day = date.getDate();
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-
-    // Costruisci la stringa di output nel formato desiderato
-    return nomeEvento ? `${day}/${month}/${year} ${hours}:${minutes}` :
-                        `${day}/${month}/${year}`;
-  }
-  
   return (
     <div className="card-group mt-2 mb-1">
       <div className="card">

@@ -23,7 +23,7 @@ export default function Event({ id, nome, nomePoi, dataOra, linkImmagine, setSho
         <div className="card-body">
           <h3 className="card-title text-center">{nome}</h3>
           <h6 className="card-title text-center">{nomePoi}</h6>
-          <h6 className="card-title text-center">{getFormattedDate(dataOra.seconds * 1000)}</h6>
+          <h6 className="card-title text-center">{getFormattedDate(dataOra.seconds * 1000, nome)}</h6>
         </div>
         {expired === false &&
           <div className="card-footer text-end">

@@ -43,7 +43,7 @@ export default function Event({ id, nome, nomePoi, dataOra, linkImmagine, setSho
           <Link to={"/buyticket/" + "E/" + id} className="btn btn-primary mt-1">Acquista un Biglietto</Link>
           {globalState.admin ? (
             <>
-              {' '}<Link className="btn btn-warning mt-1" to={"/insertEvent/" + id}><i className="material-icons align-middle" style={{color: "white"}}>edit</i></Link>{' '}
+              {' '}<Link className="btn btn-warning mt-1" to={"/insertEvent/" + id}><i className="material-icons align-middle" style={{color: "white"}}>edit</i></Link>
               {' '}<a onClick={() => deleteEvent(nome, id)} className="btn btn-danger mt-1"><i className="material-icons align-middle">delete</i></a>
             </>
           ) : null}

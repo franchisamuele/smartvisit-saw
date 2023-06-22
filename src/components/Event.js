@@ -4,7 +4,7 @@ import { GlobalStateContext } from '../App';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 
-export default function Event({ id, nome, nomePoi, dataOra, linkImmagine, setShouldReloadEvents }) {
+export default function Event({ id, nome, nomePoi, dataOra, linkImmagine, setShouldReloadEvents, expired }) {
   const { globalState } = useContext(GlobalStateContext);
 
   async function deleteEvent(nomeEvento, idEvento) {
@@ -39,15 +39,17 @@ export default function Event({ id, nome, nomePoi, dataOra, linkImmagine, setSho
           <h6 className="card-title text-center">{nomePoi}</h6>
           <h6 className="card-title text-center">{getFormattedDate(dataOra.seconds * 1000)}</h6>
         </div>
-        <div className="card-footer text-end">
-          <Link to={"/buyticket/" + "E/" + id} className="btn btn-primary mt-1">Acquista un Biglietto</Link>
-          {globalState.admin ? (
-            <>
-              {' '}<Link className="btn btn-warning mt-1" to={"/insertEvent/" + id}><i className="material-icons align-middle" style={{color: "white"}}>edit</i></Link>
-              {' '}<a onClick={() => deleteEvent(nome, id)} className="btn btn-danger mt-1"><i className="material-icons align-middle">delete</i></a>
-            </>
-          ) : null}
-        </div>
+        {expired === false &&
+          <div className="card-footer text-end">
+            <Link to={"/buyticket/" + "E/" + id} className="btn btn-primary mt-1">Acquista un Biglietto</Link>
+            {globalState.admin ? (
+              <>
+                {' '}<Link className="btn btn-warning mt-1" to={"/insertEvent/" + id}><i className="material-icons align-middle" style={{ color: "white" }}>edit</i></Link>
+                {' '}<a onClick={() => deleteEvent(nome, id)} className="btn btn-danger mt-1"><i className="material-icons align-middle">delete</i></a>
+              </>
+            ) : null}
+          </div>
+        }
       </div>
     </div>
   );

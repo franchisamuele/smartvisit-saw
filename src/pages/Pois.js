@@ -7,13 +7,9 @@ export default function Pois() {
   const [pois, setPois] = useState([]);
 
   useEffect(() => {
-    const docRef = collection(db, 'poi');
-
     const getPois = async () => {
-
-      const docSnap = await getDocs(docRef);
-      setPois(docSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-
+      const poisSnap = await getDocs( collection(db, 'poi') );
+      setPois(poisSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
 
     getPois();

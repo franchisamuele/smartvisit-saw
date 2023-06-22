@@ -37,7 +37,7 @@ export default function PoiTicket({ data }) {
       idPoi: poiIndex,
       idEvento: null,
       tipo: ticketType,
-      data: Timestamp.fromDate(new Date(inputDate)),
+      dataOra: Timestamp.fromDate(new Date(inputDate)),
       persone: numeroPersone,
       prezzoTotale: currentPrice
     };

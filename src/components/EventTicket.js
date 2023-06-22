@@ -34,7 +34,7 @@ export default function EventTicket({ data }) {
       nomeEvento: data.nome,
       idEvento: index,
       tipo: ticketType,
-      data: data.dataOra,
+      dataOra: data.dataOra,
       persone: numeroPersone,
       prezzoTotale: currentPrice
     };

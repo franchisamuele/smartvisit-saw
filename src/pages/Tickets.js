@@ -19,7 +19,7 @@ export default function Tickets() {
 
   useEffect(() => {
     const getTickets = async () => {
-      const ticketsSnap = await getDocs(query(collection(db, 'tickets'), where('uid', '==', auth.currentUser.uid), orderBy('data')));
+      const ticketsSnap = await getDocs(query(collection(db, 'tickets'), where('uid', '==', auth.currentUser.uid), orderBy('dataOra')));
       const tempTickets = ticketsSnap.docs.map(doc => ({...doc.data(), id: doc.id}));
 
       for (let ticket of tempTickets) {
@@ -32,8 +32,8 @@ export default function Tickets() {
         }
       }
 
-      setTickets( tempTickets.filter(ticket => ticket.data.seconds >= getTodayTimestamp()) );
-      setExpiredTickets( tempTickets.filter(ticket => ticket.data.seconds < getTodayTimestamp()).reverse() );
+      setTickets( tempTickets.filter(ticket => ticket.dataOra.seconds >= getTodayTimestamp()) );
+      setExpiredTickets( tempTickets.filter(ticket => ticket.dataOra.seconds < getTodayTimestamp()).reverse() );
     };
 
     getTickets();
@@ -64,7 +64,7 @@ export default function Tickets() {
             nomePoi={ticket.nomePoi}
             nomeEvento={ticket.nomeEvento}
             prezzoTotale={ticket.prezzoTotale}
-            data={ticket.data}
+            dataOra={ticket.dataOra}
           />
         ))}
       </div>
@@ -84,7 +84,7 @@ export default function Tickets() {
               nomePoi={ticket.nomePoi}
               nomeEvento={ticket.nomeEvento}
               prezzoTotale={ticket.prezzoTotale}
-              data={ticket.data}
+              dataOra={ticket.dataOra}
             />
           ))}
         </div>

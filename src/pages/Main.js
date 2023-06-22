@@ -13,9 +13,6 @@ import InsertEvent from './InsertEvent';
 import { auth, isAdmin } from '../firebaseConfig'
 import { useContext, useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import 'jquery/dist/jquery.min.js';
-import 'popper.js/dist/umd/popper.min.js';
 import { GlobalStateContext } from '../App';
 import { Timestamp } from 'firebase/firestore';
 

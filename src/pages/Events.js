@@ -1,7 +1,8 @@
 import Event from '../components/Event';
 import { useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
-import { collection, getDocs, doc, getDoc, query, where, Timestamp } from 'firebase/firestore'
+import { collection, getDocs, doc, getDoc, query, orderBy } from 'firebase/firestore'
+import { getTodayTimestamp } from './Main';
 
 export default function Events() {
   const [events, setEvents] = useState([]);
@@ -13,56 +14,20 @@ export default function Events() {
     setShowExpired(!showExpired);
   };
 
-  async function getNomePoi(idPoi) {
-    var nomePoi = "Poi non trovato";
-    const poiSnap = await getDoc(doc(db, 'poi', idPoi));
-    if (poiSnap.exists())
-      nomePoi = poiSnap.data().nome;
-
-    return nomePoi;
-  }
-
-  const descendingSortDate = (a, b) => {
-    return a.dataOra.seconds - b.dataOra.seconds;
-  };
-  const ascendingSortDate = (a, b) => {
-    return b.dataOra.seconds - a.dataOra.seconds;
-  };
-
   useEffect(() => {
     setShouldReloadEvents(false);
 
-    const currentDate = new Date();
-
-    async function getSetEvents() {
-      const docRef = query(collection(db, 'events'), where('dataOra', '>=', currentDate));
-      const docSnap = await getDocs(docRef);
-
-      const eventPromises = docSnap.docs.map(async (doc) => {
-        const nomePoi = await getNomePoi(doc.data().idPoi);
-        return { ...doc.data(), id: doc.id, nomePoi };
-      });
-
-      const resolvedEvents = await Promise.all(eventPromises);
-      setEvents(resolvedEvents.sort(descendingSortDate));
-    }
-
-    async function getSetExpiredEvents() {
-      const docRef = query(collection(db, 'events'), where('dataOra', '<', currentDate));
-      const docSnap = await getDocs(docRef);
-
-      const eventPromises = docSnap.docs.map(async (doc) => {
-        const nomePoi = await getNomePoi(doc.data().idPoi);
-        return { ...doc.data(), id: doc.id, nomePoi };
-      });
-
-      const resolvedEvents = await Promise.all(eventPromises);
-      setExpiredEvents(resolvedEvents.sort(ascendingSortDate));
-    }
-
     const getEvents = async () => {
-      getSetEvents();
-      getSetExpiredEvents();
+      const eventsSnap = await getDocs( query(collection(db, 'events'), orderBy('dataOra')) );
+      const tempEvents = eventsSnap.docs.map(doc => ({...doc.data(), id: doc.id}));
+
+      for (let event of tempEvents) {
+        const eventFoundSnap = await getDoc(doc(db, 'poi', event.idPoi));
+        event.nomePoi = eventFoundSnap.exists() ? eventFoundSnap.data().nome : "Poi non trovato";
+      }
+
+      setEvents( tempEvents.filter(event => event.dataOra.seconds >= getTodayTimestamp()) );
+      setExpiredEvents( tempEvents.filter(event => event.dataOra.seconds < getTodayTimestamp()).reverse() );
     };
 
     getEvents();

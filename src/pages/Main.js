@@ -17,6 +17,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'jquery/dist/jquery.min.js';
 import 'popper.js/dist/umd/popper.min.js';
 import { GlobalStateContext } from '../App';
+import { Timestamp } from 'firebase/firestore';
 
 export default function Main() {
   const [user, setUser] = useState(null);
@@ -62,4 +63,12 @@ export default function Main() {
   ) : (
     <LoginPage />
   );
+}
+
+export function getTodayTimestamp() {
+  const midnightDate = new Date(Timestamp.now().seconds * 1000);
+  midnightDate.setHours(2, 0, 0);
+  const midnightTimestamp = Math.floor(midnightDate.getTime() / 1000);
+
+  return midnightTimestamp;
 }

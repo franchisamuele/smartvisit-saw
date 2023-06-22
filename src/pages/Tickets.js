@@ -2,14 +2,12 @@ import Ticket from '../components/Ticket';
 import PannelloAmministratore from '../components/PannelloAmministratore';
 import { useContext, useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
-import { Timestamp, collection, doc, getDoc, getDocs, orderBy, query, where } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, orderBy, query, where } from 'firebase/firestore'
 import { auth } from '../firebaseConfig';
 import { GlobalStateContext } from '../App';
-import LoadingSpinner from '../components/LoadingSpinner';
+import { getTodayTimestamp } from './Main';
 
 export default function Tickets() {
-  const [loading, setLoading] = useState(true);
-
   const { globalState } = useContext(GlobalStateContext);
   const [tickets, setTickets] = useState([]);
   const [expiredTickets, setExpiredTickets] = useState([]);
@@ -18,14 +16,6 @@ export default function Tickets() {
   function toggleExpired() {
     setShowExpired(!showExpired);
   };
-
-  function getTodayTimestamp() {
-    const midnightDate = new Date(Timestamp.now().seconds * 1000);
-    midnightDate.setHours(2, 0, 0);
-    const midnightTimestamp = Math.floor(midnightDate.getTime() / 1000);
-
-    return midnightTimestamp;
-  }
 
   useEffect(() => {
     const getTickets = async () => {
@@ -44,13 +34,12 @@ export default function Tickets() {
 
       setTickets( tempTickets.filter(ticket => ticket.data.seconds >= getTodayTimestamp()) );
       setExpiredTickets( tempTickets.filter(ticket => ticket.data.seconds < getTodayTimestamp()).reverse() );
-      setLoading(false);
     };
 
     getTickets();
   }, []);
 
-  return loading ? <LoadingSpinner /> : (
+  return (
     <div className="container mt-3 mb-3">
       <h1 className="mb-4 text-center">I MIEI BIGLIETTI</h1>
       <div className='text-center'>

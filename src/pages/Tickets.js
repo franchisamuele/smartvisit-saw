@@ -2,11 +2,14 @@ import Ticket from '../components/Ticket';
 import PannelloAmministratore from '../components/PannelloAmministratore';
 import { useContext, useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
-import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore'
+import { Timestamp, collection, doc, getDoc, getDocs, orderBy, query, where } from 'firebase/firestore'
 import { auth } from '../firebaseConfig';
 import { GlobalStateContext } from '../App';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function Tickets() {
+  const [loading, setLoading] = useState(true);
+
   const { globalState } = useContext(GlobalStateContext);
   const [tickets, setTickets] = useState([]);
   const [expiredTickets, setExpiredTickets] = useState([]);
@@ -16,52 +19,38 @@ export default function Tickets() {
     setShowExpired(!showExpired);
   };
 
-  const descendingSortDate = (a, b) => {
-    return a.data.seconds - b.data.seconds;
-  };
-  const ascendingSortDate = (a, b) => {
-    return b.data.seconds - a.data.seconds;
-  };
+  function getTodayTimestamp() {
+    const midnightDate = new Date(Timestamp.now().seconds * 1000);
+    midnightDate.setHours(2, 0, 0);
+    const midnightTimestamp = Math.floor(midnightDate.getTime() / 1000);
+
+    return midnightTimestamp;
+  }
 
   useEffect(() => {
-    const docRef = query(collection(db, 'tickets'), where('uid', '==', auth.currentUser.uid));
-
     const getTickets = async () => {
-      const ticketsTemp = [];
-      const expiredTicketsTemp = [];
+      const ticketsSnap = await getDocs(query(collection(db, 'tickets'), where('uid', '==', auth.currentUser.uid), orderBy('data')));
+      const tempTickets = ticketsSnap.docs.map(doc => ({...doc.data(), id: doc.id}));
 
-      const docSnap = await getDocs(docRef);
+      for (let ticket of tempTickets) {
+        const poiFoundSnap = await getDoc(doc(db, 'poi', ticket.idPoi));
+        ticket.nomePoi = poiFoundSnap.exists() ? poiFoundSnap.data().nome : "Poi non trovato";
 
-      const promises = docSnap.docs.map(async (docum) => {
-        const poiTrovato = await getDoc(doc(db, 'poi', docum.data().idPoi));
-        const nomePoi = poiTrovato.exists() ? poiTrovato.data().nome : "Poi non trovato";
-  
-        const isEvent = docum.data().idEvento;
-        let nomeEvento = null;
-        if (isEvent) {
-          const eventoTrovato = await getDoc(doc(db, 'events', docum.data().idEvento));
-          nomeEvento = eventoTrovato.exists() ? eventoTrovato.data().nome : "Evento non trovato";
+        if (ticket.idEvento) {
+          const eventFoundSnap = await getDoc(doc(db, 'events', ticket.idEvento));
+          ticket.nomeEvento = eventFoundSnap.exists() ? eventFoundSnap.data().nome : "Evento non trovato";
         }
-  
-        const currTicket = { ...docum.data(), id: docum.id, nomePoi, ...(isEvent && { nomeEvento }) };
-  
-        const currTimestamp = Math.floor(new Date().setHours(0, 0, 0, 0) / 1000);
-        if (currTimestamp < currTicket.data.seconds)
-          ticketsTemp.push(currTicket);
-        else
-          expiredTicketsTemp.push(currTicket);
-      });
-  
-      await Promise.all(promises);
+      }
 
-      setTickets(ticketsTemp.sort(descendingSortDate));
-      setExpiredTickets(expiredTicketsTemp.sort(ascendingSortDate));
+      setTickets( tempTickets.filter(ticket => ticket.data.seconds >= getTodayTimestamp()) );
+      setExpiredTickets( tempTickets.filter(ticket => ticket.data.seconds < getTodayTimestamp()).reverse() );
+      setLoading(false);
     };
 
     getTickets();
   }, []);
 
-  return (
+  return loading ? <LoadingSpinner /> : (
     <div className="container mt-3 mb-3">
       <h1 className="mb-4 text-center">I MIEI BIGLIETTI</h1>
       <div className='text-center'>

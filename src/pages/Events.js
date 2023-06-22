@@ -46,6 +46,7 @@ export default function Events() {
             id={event.id}
             nome={event.nome}
             nomePoi={event.nomePoi}
+            dataOra={event.dataOra}
             linkImmagine={event.linkImmagine}
             setShouldReloadEvents={setShouldReloadEvents}
           />);

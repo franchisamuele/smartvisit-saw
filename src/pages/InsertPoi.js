@@ -24,10 +24,11 @@ export default function InsertPoi() {
 
         if (docSnap.exists()) {
           setEditMode(true);
-          if (prezzoBiglietto)
-            setIsChecked(true);
             
           const poi = docSnap.data();
+
+          if (poi.prezzoBiglietto)
+            setIsChecked(true);
 
           setNome(poi.nome);
           setDescrizione(poi.descrizione);
@@ -52,7 +53,8 @@ export default function InsertPoi() {
       return alert("Il prezzo del biglietto deve essere >= 1!");
     }
 
-    const res = { nome, descrizione, dataRealizzazione, latitudine, longitudine, linkImmagine, ...(isChecked && { prezzoBiglietto }) };
+    console.log(prezzoBiglietto);
+    const res = { nome, descrizione, dataRealizzazione, latitudine, longitudine, linkImmagine, prezzoBiglietto };
 
     if (!editMode) {
       const message = "Sei sicuro di voler inserire questo poi?";
@@ -69,6 +71,12 @@ export default function InsertPoi() {
     }
   }
 
+  function handleCheckbox() {
+    if (isChecked)
+      setPrezzoBiglietto("");
+    setIsChecked(!isChecked);
+  }
+
   return (
     <div className="container mt-3 mb-3">
       <h1 className="mb-4 text-center">{editMode ? "Modifica" : "Inserimento"} Punti di Interesse</h1>
@@ -81,8 +89,8 @@ export default function InsertPoi() {
         <p>Link immagine: <input type="text" value={linkImmagine} onChange={(e) => setLinkImmagine(e.target.value)} required></input></p>
 
         <p>
-          <input id="prezzo" type="checkbox" checked={isChecked} onChange={() => setIsChecked(!isChecked)}></input>{' '}
-          <label htmlFor="prezzo" class="form-check-label" for="remember">Aggiungere prezzo di ingresso?</label><br />
+          <input id="prezzo" type="checkbox" checked={isChecked} onChange={handleCheckbox}></input>{' '}
+          <label htmlFor="prezzo" className="form-check-label">Aggiungere prezzo di ingresso?</label><br />
         </p>
         <p>
           {isChecked ? (

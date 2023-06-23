@@ -18,7 +18,10 @@ export default function LoginPage() {
   }
 
   useEffect(() => {
-    document.querySelector('html').style.paddingBottom = 0;
+    const html = document.querySelector('html');
+    html.style.paddingBottom = 0;
+
+    return () => html.style.paddingBottom = "56px";
   }, []);
 
   return <>

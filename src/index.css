@@ -12,10 +12,6 @@
     #navPhone {
         display: flex;
     }
-
-    html {
-        padding-bottom: 56px;
-    }
 }
 
 @media screen and (min-width: 768px) {

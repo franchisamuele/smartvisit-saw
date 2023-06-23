@@ -44,7 +44,7 @@ export default function Tickets() {
       <h1 className="mb-4 text-center">I MIEI BIGLIETTI</h1>
       <div className='text-center'>
         <div>
-          <img className="rounded-circle mb-3" referrerPolicy="no-referrer" src={auth.currentUser.photoURL} /><br />
+          <img className="rounded-circle mb-3" referrerPolicy="no-referrer" src={auth.currentUser.photoURL} alt="Foto profilo" /><br />
           <p>
             Nome: {auth.currentUser.displayName}<br />
             Email: {auth.currentUser.email}

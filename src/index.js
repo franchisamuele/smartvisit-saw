@@ -22,7 +22,7 @@ if ('serviceWorker' in navigator) {
 
 Notification.requestPermission();
 
-export async function sendNotification(message, description, location, navigate) {
+export async function sendNotification(message, description, image, location, navigate) {
   if ("Notification" in window) {
     Notification.requestPermission().then((result) => {
       if (result === 'granted') {
@@ -31,7 +31,7 @@ export async function sendNotification(message, description, location, navigate)
           body: description,
           icon: "/images/manifest-icon-512.png",
           vibrate: [200, 100, 200],
-          image: 'torre_di_pisa.jpg'
+          image
         });
 
         notification.onclick = () => navigate(location);

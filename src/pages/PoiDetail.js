@@ -37,9 +37,13 @@ export default function PoiDetail() {
   }, [navigate, poiIndex]);
 
   useEffect(() => {
+    /* Questa notifica doveva comparire quando l'utente si avvicinava al punto di interesse col telefono
+       con link alla pagina del dettaglio, tipo "Scopri di più su nomePoi".
+       Per non rendere l'applicazione troppo complessa con i calcoli per capire se l'utente si trova nel raggio del POI
+       l'ho implementata in modo più semplice (e stupido)
+    */
     if (poi)
-      sendNotification('Hai aperto: ' + poi.nome, 'Clicca per visualizzare sulla mappa', '/' + poi.id, navigate);
-      //sendNotification('Sei vicino a: ' + poi.nome, 'Clicca per visualizzare i dettagli', '/' + poi.id, navigate);
+      sendNotification(poi.nome, 'Clicca per visualizzare sulla mappa', "/images/Photos/" + poi.linkImmagine, '/' + poi.id, navigate);
   }, [poi]);
 
   return poi ? (

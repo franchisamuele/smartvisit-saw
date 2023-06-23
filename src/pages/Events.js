@@ -35,8 +35,8 @@ export default function Events() {
 
   return (
     <>
-      <div className="container mt-1 mb-3">
-        <div className="mb-3 row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
+      <div className="container mb-3">
+        <div className="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
           {events.map((event) => {
             return (<Event
               key={event.id}
@@ -52,14 +52,13 @@ export default function Events() {
         </div>
 
         {expiredEvents.length > 0 ? (
-          <div className='w-100 text-center'>
+          <div className='mt-3 mb-3 w-100 text-center'>
             <button onClick={toggleExpired} className="btn btn-secondary">{showExpired ? "Nascondi" : "Mostra"} eventi passati</button>
           </div>
         ) : null}
 
         {showExpired ? (
-          <div className="container mt-1 mb-3">
-            <div className="mb-3 row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
+            <div className="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
               {expiredEvents.map((event) => {
                 return (<Event
                   key={event.id}
@@ -73,7 +72,6 @@ export default function Events() {
                 />);
               })}
             </div>
-          </div>
         ) : null}
       </div>
     </>

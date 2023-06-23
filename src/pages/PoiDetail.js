@@ -49,9 +49,9 @@ export default function PoiDetail() {
 
         <p>{poi ? poi.descrizione : ""}</p>
 
-        <div className="container mb-3">
+        <div className="container">
           <div className="row">
-            <div className="col-12 mb-2">
+            <div className="col-sm-12 col-lg-8 mb-2">
               {poi.prezzoBiglietto ? (
                 <>
                   <Link className="btn btn-primary mb-1" to={"/buyticket/P/" + poi.id} role="button">Acquista un Biglietto</Link>{' '}
@@ -60,11 +60,15 @@ export default function PoiDetail() {
               <Link className="btn btn-primary mb-1" to={"/" + poi.id} role="button">Mostra sulla mappa</Link>{' '}
               <a className="btn btn-primary mb-1" href={"https://www.google.com/maps/dir/?api=1&destination=" + poi.latitudine + "," + poi.longitudine + "&travelmode=walking"} role="button">Direzioni</a>
             </div>
-          </div>
 
-          {/* SOLO AMMINISTRATORE */}
-          {globalState.admin ? <ModifyDelete id={poi.id} deletePoi={deletePoi} /> : null}
-          {/* SOLO AMMINISTRATORE */}
+            {/* SOLO AMMINISTRATORE */}
+            {globalState.admin &&
+              <div className="col-sm-12 col-lg-4 mb-2 text-end">
+                <ModifyDelete id={poi.id} deletePoi={deletePoi} />
+              </div>
+            }
+            {/* SOLO AMMINISTRATORE */}
+          </div>
         </div>
       </div>
     </>

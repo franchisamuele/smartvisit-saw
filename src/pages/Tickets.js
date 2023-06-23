@@ -56,7 +56,7 @@ export default function Tickets() {
         </div>
       </div>
 
-      <div className="mb-3 row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
+      <div className="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
         {tickets.map((ticket) => (
           <Ticket
             key={ticket.id}
@@ -71,7 +71,7 @@ export default function Tickets() {
       </div>
 
       {expiredTickets.length > 0 ? (
-        <div className='w-100 text-center'>
+        <div className='mt-3 mb-3 w-100 text-center'>
           <button onClick={toggleExpired} className="btn btn-secondary">{showExpired ? "Nascondi" : "Mostra"} biglietti scaduti</button>
         </div>
       ) : null}

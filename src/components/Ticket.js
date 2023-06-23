@@ -3,7 +3,7 @@ import { getFormattedDate } from "../pages/Main";
 
 export default function Ticket({ id, idPoi, nomePoi, nomeEvento, prezzoTotale, dataOra }) {
   return (
-    <div className="card-group mt-2 mb-1">
+    <div className="card-group">
       <div className="card">
         <div className="card-body">
             <h2>Biglietto # {id.slice(0,5)}</h2>

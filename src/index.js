@@ -22,17 +22,19 @@ if ('serviceWorker' in navigator) {
 
 Notification.requestPermission();
 
-export async function sendNotification(message, description) {
+export async function sendNotification(message, description, location, navigate) {
   if ("Notification" in window) {
     Notification.requestPermission().then((result) => {
       if (result === 'granted') {
-        new Notification(message, {
+        const notification = new Notification(message, {
           lang: "it",
           body: description,
           icon: "/images/manifest-icon-512.png",
           vibrate: [200, 100, 200],
           image: 'torre_di_pisa.jpg'
         });
+
+        notification.onclick = () => navigate(location);
       }
     });
   } else {

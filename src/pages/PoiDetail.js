@@ -38,7 +38,8 @@ export default function PoiDetail() {
 
   useEffect(() => {
     if (poi)
-      sendNotification('Sei vicino a: ' + poi.nome, 'Clicca per visualizzare i dettagli');
+      sendNotification('Hai aperto: ' + poi.nome, 'Clicca per visualizzare sulla mappa', '/' + poi.id, navigate);
+      //sendNotification('Sei vicino a: ' + poi.nome, 'Clicca per visualizzare i dettagli', '/' + poi.id, navigate);
   }, [poi]);
 
   return poi ? (

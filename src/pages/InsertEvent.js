@@ -61,16 +61,16 @@ export default function InsertEvent() {
 
     if (!editMode) {
       const message = "Sei sicuro di voler inserire questo evento?";
-    if (window.confirm(message)) {
-      await addDoc(collection(db, "events"), res);
-      navigate('/events');
-    }
+      if (window.confirm(message)) {
+        await addDoc(collection(db, "events"), res);
+        navigate('/events');
+      }
     } else {
       const message = "Sei sicuro di voler modificare questo evento?";
-    if (window.confirm(message)) {
+      if (window.confirm(message)) {
         await updateDoc(doc(db, 'events', eventIndex), res);
-      navigate('/events');
-    }
+        navigate('/events');
+      }
     }
   }
 

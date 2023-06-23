@@ -6,6 +6,7 @@ import PoiDetail from './PoiDetail'
 import Events from './Events'
 import Tickets from './Tickets'
 import BuyTicket from './BuyTicket'
+import FallbackPage from './FallbackPage'
 import NoPage from './NoPage'
 import LoginPage from './LoginPage'
 import InsertPoi from './InsertPoi';
@@ -43,6 +44,7 @@ export default function Main() {
         <Route path="/events" element={<Events />} />
         <Route path="/tickets" element={<Tickets />} />
         <Route path="/buyticket/:ticketType/:index" element={<BuyTicket />} />
+        <Route path="/FallbackPage" element={<FallbackPage />} />
 
         {/* SOLO ADMIN */}
         {globalState.admin ? (

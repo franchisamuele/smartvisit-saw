@@ -24,7 +24,7 @@ export default function EventTicket({ data }) {
     };
 
     getData();
-  }, []);
+  }, [data.idPoi]);
 
   async function handleSubmit(e) {
     e.preventDefault();

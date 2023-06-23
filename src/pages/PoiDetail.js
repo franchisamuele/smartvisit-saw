@@ -12,17 +12,19 @@ export default function PoiDetail() {
   const { poiIndex } = useParams();
   const navigate = useNavigate();
 
-  const deletePoi = async () => {
+  const deletePoi = async (e) => {
+    e.preventDefault();
+
     const message = "Sei davvero sicuro di voler eliminare il punto di interesse?\nQuesta azione è irreversibile!";
     if (window.confirm(message)) {
-      await deleteDoc( doc(db, "poi", poiIndex) );
+      await deleteDoc(doc(db, "poi", poiIndex));
       navigate("/pointsOfInterest");
     }
   }
 
   useEffect(() => {
     const getData = async () => {
-      const poiSnap = await getDoc( doc(db, 'poi', poiIndex) );
+      const poiSnap = await getDoc(doc(db, 'poi', poiIndex));
 
       if (poiSnap.exists()) {
         setPoi({ ...poiSnap.data(), id: poiSnap.id });
@@ -32,7 +34,7 @@ export default function PoiDetail() {
     };
 
     getData();
-  }, []);
+  }, [navigate, poiIndex]);
 
   return poi ? (
     <>
@@ -52,7 +54,7 @@ export default function PoiDetail() {
             <div className="col-12 mb-2">
               {poi.prezzoBiglietto ? (
                 <>
-                  <Link className="btn btn-primary mb-1" to={"/buyticket/" + "P/" + poi.id} role="button">Acquista un Biglietto</Link>{' '}
+                  <Link className="btn btn-primary mb-1" to={"/buyticket/P/" + poi.id} role="button">Acquista un Biglietto</Link>{' '}
                 </>
               ) : null}
               <Link className="btn btn-primary mb-1" to={"/" + poi.id} role="button">Mostra sulla mappa</Link>{' '}
@@ -63,7 +65,6 @@ export default function PoiDetail() {
           {/* SOLO AMMINISTRATORE */}
           {globalState.admin ? <ModifyDelete id={poi.id} deletePoi={deletePoi} /> : null}
           {/* SOLO AMMINISTRATORE */}
-
         </div>
       </div>
     </>

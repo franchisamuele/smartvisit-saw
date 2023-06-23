@@ -16,6 +16,10 @@
     html {
         padding-bottom: 56px;
     }
+    
+    html:has(> #login-page) {
+        padding-bottom: 0;
+    }
 }
 
 @media screen and (min-width: 768px) {

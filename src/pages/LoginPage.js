@@ -18,7 +18,7 @@ export default function LoginPage() {
   }
 
   return <>
-  <div className="min-vh-100 align-items-center">
+  <div id="login-page" className="min-vh-100 align-items-center">
 
     {isLogged && <LoadingSpinner />}
     <div>

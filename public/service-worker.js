@@ -53,5 +53,9 @@ self.addEventListener('fetch', event => {
     caches
       .match(event.request) // richiesta già in cache
       .then(cached => cached || fetch(event.request)) // cache || richiedi (va avanti con la fetch normale)
-  )
+  ).catch(() => {
+    const routerUrl = new URL('/FallbackPage', self.location.origin);
+    const response = Response.redirect(routerUrl.href);
+    return response;
+  });
 });

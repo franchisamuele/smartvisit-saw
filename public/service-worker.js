@@ -44,7 +44,7 @@ self.addEventListener('fetch', event => {
     event.respondWith(
       caches
         .match(event.request) // richiesta già in cache
-        .then(cached => cached || fetch(event.request).then(fetchRes => // cache || richiedi (va avanti con la fetch normale)
+        .then(cached => cached || fetch(event.request).then(fetchRes => // cache || richiedi (va avanti con la fetch normale e salva in cache)
           caches.open(DYNAMIC_CACHE)
             .then(cache => {
               cache.put(event.request.url, fetchRes.clone());

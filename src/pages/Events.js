@@ -39,6 +39,7 @@ export default function Events() {
         <div className="mb-3 row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
           {events.map((event) => {
             return (<Event
+              key={event.id}
               id={event.id}
               nome={event.nome}
               nomePoi={event.nomePoi}
@@ -61,6 +62,7 @@ export default function Events() {
             <div className="mb-3 row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
               {expiredEvents.map((event) => {
                 return (<Event
+                  key={event.id}
                   id={event.id}
                   nome={event.nome}
                   nomePoi={event.nomePoi}

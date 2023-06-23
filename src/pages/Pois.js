@@ -20,6 +20,7 @@ export default function Pois() {
       <div className="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
         {pois.map((poi) => {
           return (<Poi
+            key={poi.id}
             id={poi.id}
             nome={poi.nome}
             linkImmagine={poi.linkImmagine}

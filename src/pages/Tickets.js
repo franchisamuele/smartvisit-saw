@@ -20,7 +20,7 @@ export default function Tickets() {
   useEffect(() => {
     const getTickets = async () => {
       const ticketsSnap = await getDocs(query(collection(db, 'tickets'), where('uid', '==', auth.currentUser.uid), orderBy('dataOra')));
-      const tempTickets = ticketsSnap.docs.map(doc => ({...doc.data(), id: doc.id}));
+      const tempTickets = ticketsSnap.docs.map(doc => ({ ...doc.data(), id: doc.id }));
 
       for (let ticket of tempTickets) {
         const poiFoundSnap = await getDoc(doc(db, 'poi', ticket.idPoi));
@@ -32,8 +32,8 @@ export default function Tickets() {
         }
       }
 
-      setTickets( tempTickets.filter(ticket => ticket.dataOra.seconds >= getTodayTimestamp()) );
-      setExpiredTickets( tempTickets.filter(ticket => ticket.dataOra.seconds < getTodayTimestamp()).reverse() );
+      setTickets(tempTickets.filter(ticket => ticket.dataOra.seconds >= getTodayTimestamp()));
+      setExpiredTickets(tempTickets.filter(ticket => ticket.dataOra.seconds < getTodayTimestamp()).reverse());
     };
 
     getTickets();
@@ -59,6 +59,7 @@ export default function Tickets() {
       <div className="mb-3 row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
         {tickets.map((ticket) => (
           <Ticket
+            key={ticket.id}
             id={ticket.id}
             idPoi={ticket.idPoi}
             nomePoi={ticket.nomePoi}
@@ -79,6 +80,7 @@ export default function Tickets() {
         <div className="mt-3 row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
           {expiredTickets.map((ticket) => (
             <Ticket
+              key={ticket.id}
               id={ticket.id}
               idPoi={ticket.idPoi}
               nomePoi={ticket.nomePoi}

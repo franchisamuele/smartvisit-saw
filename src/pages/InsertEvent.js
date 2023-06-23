@@ -85,7 +85,7 @@ export default function InsertEvent() {
             <option disabled value=""> -- seleziona un poi -- </option>
             {pois.map((poi) => {
               return (
-                <option value={poi.id}>{poi.nome}</option>
+                <option key={poi.id} value={poi.id}>{poi.nome}</option>
               );
             })}
           </select>

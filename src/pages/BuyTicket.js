@@ -44,8 +44,6 @@ export default function BuyTicket() {
     ) : 
     ticketType === 'E' ? (
       data ? <EventTicket data={data} /> : <LoadingSpinner />
-    ) :
-    console.log(index, ticketType)
-    //navigate('/NoPage')
+    ) : null
   );
 }

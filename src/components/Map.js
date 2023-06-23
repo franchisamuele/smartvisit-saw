@@ -61,7 +61,7 @@ export default function Map() {
       {
         pois.map((poi) => {
           return (
-            <Marker position={[poi.latitudine, poi.longitudine]} icon={placeholderIcon}>
+            <Marker key={poi.id} position={[poi.latitudine, poi.longitudine]} icon={placeholderIcon}>
               <Popup>
                 <Link to={"/pointsOfInterest/" + poi.id}>{poi.nome}</Link>
               </Popup>

@@ -1,6 +1,6 @@
 import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../firebaseConfig'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import LoadingSpinner from '../components/LoadingSpinner';
 import LoginCarousel from '../components/LoginCarousel';
 import { GoogleButton } from 'react-google-button'
@@ -17,8 +17,12 @@ export default function LoginPage() {
     setIsLogged(true);
   }
 
+  useEffect(() => {
+    document.querySelector('html').style.paddingBottom = 0;
+  }, []);
+
   return <>
-  <div id="login-page" className="min-vh-100 align-items-center">
+  <div className="min-vh-100 align-items-center">
 
     {isLogged && <LoadingSpinner />}
     <div>

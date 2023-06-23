@@ -5,6 +5,7 @@ import { deleteDoc, doc, getDoc } from 'firebase/firestore'
 import LoadingSpinner from '../components/LoadingSpinner'
 import ModifyDelete from '../components/ModifyDelete';
 import { GlobalStateContext } from '../App';
+import { sendNotification } from '../index';
 
 export default function PoiDetail() {
   const { globalState } = useContext(GlobalStateContext);
@@ -26,6 +27,7 @@ export default function PoiDetail() {
 
       if (poiSnap.exists()) {
         setPoi({ ...poiSnap.data(), id: poiSnap.id });
+        return poiSnap.data().nome;
       } else {
         navigate('/NoPage');
       }
@@ -33,6 +35,11 @@ export default function PoiDetail() {
 
     getData();
   }, [navigate, poiIndex]);
+
+  useEffect(() => {
+    if (poi)
+      sendNotification('Sei vicino a: ' + poi.nome, 'Clicca per visualizzare i dettagli');
+  }, [poi]);
 
   return poi ? (
     <>

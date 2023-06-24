@@ -1,7 +1,7 @@
 import Event from '../components/Event';
 import { useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
-import { collection, getDocs, doc, getDoc, query, orderBy } from 'firebase/firestore'
+import { collection, doc, query, orderBy, onSnapshot } from 'firebase/firestore'
 import { getTodayTimestamp } from './Main';
 import LoadingSpinner from '../components/LoadingSpinner';
 
@@ -19,21 +19,29 @@ export default function Events() {
   useEffect(() => {
     setShouldReloadEvents(false);
 
-    const getEvents = async () => {
-      const eventsSnap = await getDocs(query(collection(db, 'events'), orderBy('dataOra')));
+    var poisUnsub = [];
+
+    const eventsUnsub = onSnapshot(query(collection(db, 'events'), orderBy('dataOra')), (eventsSnap) => {
       const tempEvents = eventsSnap.docs.map(doc => ({ ...doc.data(), id: doc.id }));
 
       for (let event of tempEvents) {
-        const eventFoundSnap = await getDoc(doc(db, 'poi', event.idPoi));
-        event.nomePoi = eventFoundSnap.exists() ? eventFoundSnap.data().nome : "Poi non trovato";
+        poisUnsub.push(
+          onSnapshot(doc(db, 'poi', event.idPoi), (eventFoundSnap) => {
+            event.nomePoi = eventFoundSnap.exists() ? eventFoundSnap.data().nome : "Poi non trovato";
+          })
+        );
       }
 
       setEvents(tempEvents.filter(event => event.dataOra.seconds >= getTodayTimestamp()));
       setExpiredEvents(tempEvents.filter(event => event.dataOra.seconds < getTodayTimestamp()).reverse());
       setLoading(false);
-    };
+    });
 
-    getEvents();
+    return () => {
+      eventsUnsub();
+      for (let unsub of poisUnsub)
+        unsub();
+    }
   }, [shouldReloadEvents]);
 
   return loading ? <LoadingSpinner /> : (

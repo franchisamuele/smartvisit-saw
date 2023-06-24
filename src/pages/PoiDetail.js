@@ -1,7 +1,7 @@
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
-import { deleteDoc, doc, getDoc } from 'firebase/firestore'
+import { deleteDoc, doc, onSnapshot } from 'firebase/firestore'
 import LoadingSpinner from '../components/LoadingSpinner'
 import ModifyDelete from '../components/ModifyDelete';
 import { GlobalStateContext } from '../App';
@@ -22,19 +22,15 @@ export default function PoiDetail() {
   }
 
   useEffect(() => {
-    const getData = async () => {
-      const poiSnap = await getDoc(doc(db, 'poi', poiIndex));
-
+    return onSnapshot(doc(db, 'poi', poiIndex), (poiSnap) => {
       if (poiSnap.exists()) {
         setPoi({ ...poiSnap.data(), id: poiSnap.id });
         return poiSnap.data().nome;
       } else {
         navigate('/NoPage');
       }
-    };
-
-    getData();
-  }, [navigate, poiIndex]);
+    });
+  }, []);
 
   useEffect(() => {
     /* Questa notifica doveva comparire quando l'utente si avvicinava al punto di interesse col telefono

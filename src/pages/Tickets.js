@@ -2,7 +2,7 @@ import Ticket from '../components/Ticket';
 import PannelloAmministratore from '../components/PannelloAmministratore';
 import { useContext, useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
-import { collection, doc, getDoc, getDocs, orderBy, query, where } from 'firebase/firestore'
+import { collection, doc, onSnapshot, orderBy, query, where } from 'firebase/firestore'
 import { auth } from '../firebaseConfig';
 import { GlobalStateContext } from '../App';
 import { getTodayTimestamp } from './Main';
@@ -20,26 +20,39 @@ export default function Tickets() {
   };
 
   useEffect(() => {
-    const getTickets = async () => {
-      const ticketsSnap = await getDocs(query(collection(db, 'tickets'), where('uid', '==', auth.currentUser.uid), orderBy('dataOra')));
+    var nestedUnsubs = [];
+
+    const ticketsUnsub = onSnapshot(query(collection(db, 'tickets'), where('uid', '==', auth.currentUser.uid), orderBy('dataOra')), (ticketsSnap) => {
       const tempTickets = ticketsSnap.docs.map(doc => ({ ...doc.data(), id: doc.id }));
 
       for (let ticket of tempTickets) {
-        const poiFoundSnap = await getDoc(doc(db, 'poi', ticket.idPoi));
-        ticket.nomePoi = poiFoundSnap.exists() ? poiFoundSnap.data().nome : "Poi non trovato";
 
-        if (ticket.idEvento) {
-          const eventFoundSnap = await getDoc(doc(db, 'events', ticket.idEvento));
-          ticket.nomeEvento = eventFoundSnap.exists() ? eventFoundSnap.data().nome : "Evento non trovato";
-        }
+        nestedUnsubs.push(
+          onSnapshot(doc(db, 'poi', ticket.idPoi), (poiFoundSnap) => {
+            ticket.nomePoi = poiFoundSnap.exists() ? poiFoundSnap.data().nome : "Poi non trovato";
+
+            if (ticket.idEvento) {
+              nestedUnsubs.push(
+                onSnapshot(doc(db, 'events', ticket.idEvento), eventFoundSnap => {
+                  ticket.nomeEvento = eventFoundSnap.exists() ? eventFoundSnap.data().nome : "Evento non trovato";
+                })
+              );
+            }
+          })
+        );
+
       }
 
       setTickets(tempTickets.filter(ticket => ticket.dataOra.seconds >= getTodayTimestamp()));
       setExpiredTickets(tempTickets.filter(ticket => ticket.dataOra.seconds < getTodayTimestamp()).reverse());
       setLoading(false);
-    };
+    });
 
-    getTickets();
+    return () => {
+      ticketsUnsub();
+      for (let unsub of nestedUnsubs)
+        unsub();
+    }
   }, []);
 
   return (

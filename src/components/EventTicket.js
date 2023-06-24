@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { auth, db } from '../firebaseConfig'
-import { collection, addDoc, doc, getDoc } from "firebase/firestore";
+import { collection, addDoc, doc, onSnapshot } from "firebase/firestore";
 import { getFormattedDate } from "../pages/Main";
 
 export default function EventTicket({ data }) {
@@ -13,18 +13,12 @@ export default function EventTicket({ data }) {
 
   const [poi, setPoi] = useState(null);
   useEffect(() => {
-    const docRef = doc(db, 'poi', data.idPoi);
-
-    const getData = async () => {
-      const docSnap = await getDoc(docRef);
-
+    return onSnapshot(doc(db, 'poi', data.idPoi), (docSnap) => {
       if (docSnap.exists()) {
         setPoi({ ...docSnap.data(), id: docSnap.id });
       }
-    };
-
-    getData();
-  }, [data.idPoi]);
+    });
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();

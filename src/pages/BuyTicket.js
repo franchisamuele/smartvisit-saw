@@ -3,7 +3,7 @@ import EventTicket from '../components/EventTicket'
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
-import { doc, getDoc } from 'firebase/firestore'
+import { doc, onSnapshot } from 'firebase/firestore'
 import LoadingSpinner from '../components/LoadingSpinner'
 import NoPage from './NoPage';
 
@@ -23,28 +23,21 @@ export default function BuyTicket() {
       navigate('/NoPage');
     }
 
-    const getData = async () => {
-      const docSnap = await getDoc(docRef);
-
+    return onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
         setData({ ...docSnap.data(), id: docSnap.id });
       } else {
         navigate('/NoPage');
       }
-    };
-    
-    if (ticketType !== 'P' && ticketType !== 'E')
-      navigate('/NoPage');
-    else
-      getData();
+    });
   }, []);
 
   return (
     ticketType === 'P' ? (
       data ? <PoiTicket data={data} /> : <LoadingSpinner />
-    ) : 
-    ticketType === 'E' ? (
-      data ? <EventTicket data={data} /> : <LoadingSpinner />
-    ) : <NoPage />
+    ) :
+      ticketType === 'E' ? (
+        data ? <EventTicket data={data} /> : <LoadingSpinner />
+      ) : <NoPage />
   );
 }

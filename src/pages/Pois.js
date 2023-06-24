@@ -1,7 +1,7 @@
 import Poi from '../components/Poi';
 import { useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, onSnapshot } from 'firebase/firestore'
 import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function Pois() {
@@ -9,13 +9,10 @@ export default function Pois() {
   const [pois, setPois] = useState([]);
 
   useEffect(() => {
-    const getPois = async () => {
-      const poisSnap = await getDocs( collection(db, 'poi') );
+    return onSnapshot(collection(db, 'poi'), (poisSnap) => {
       setPois(poisSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       setLoading(false);
-    };
-
-    getPois();
+    });
   }, []);
 
   return loading ? <LoadingSpinner /> : (

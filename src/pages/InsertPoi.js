@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
+import { addDoc, collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { db } from '../firebaseConfig'
@@ -17,14 +17,10 @@ export default function InsertPoi() {
   const { poiIndex } = useParams();
   useEffect(() => {
     if (poiIndex) { // Modifica no inserisci
-      const docRef = doc(db, 'poi', poiIndex);
-
-      const getData = async () => {
-        const docSnap = await getDoc(docRef);
-
+      return onSnapshot(doc(db, 'poi', poiIndex), (docSnap) => {
         if (docSnap.exists()) {
           setEditMode(true);
-            
+
           const poi = docSnap.data();
 
           if (poi.prezzoBiglietto)
@@ -38,9 +34,7 @@ export default function InsertPoi() {
           setLinkImmagine(poi.linkImmagine);
           setPrezzoBiglietto(poi.prezzoBiglietto);
         }
-      };
-
-      getData();
+      });      
     }
   }, []);
 

@@ -1,4 +1,4 @@
-import { Timestamp, addDoc, collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
+import { Timestamp, addDoc, collection, doc, onSnapshot, orderBy, query, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { db } from '../firebaseConfig'
@@ -16,36 +16,32 @@ export default function InsertEvent() {
   const [pois, setPois] = useState([]);
 
   useEffect(() => {
+    const poisUnsub = onSnapshot(query(collection(db, 'poi'), orderBy('nome')), (docSnap) => {
+      setPois(docSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    });
 
-    const getPois = async () => {
-      const poiArray = [];
-
-      const docSnap = await getDocs(collection(db, 'poi'));
-      docSnap.docs.forEach((doc) => (poiArray.push({ ...doc.data(), id: doc.id })));
-
-      setPois(poiArray.sort((a, b) => a.nome.localeCompare(b.nome)));
-    };
-
-    const getEvent = async () => {
-      const docSnap = await getDoc(doc(db, 'events', eventIndex));
-
-      if (docSnap.exists()) {
-        setEditMode(true);
-
-        const event = docSnap.data();
-
-        setNome(event.nome);
-        setIdPoi(event.idPoi);
-        setDataOra(new Date((event.dataOra.seconds + 7200) * 1000).toISOString().slice(0, 16));
-        setLinkImmagine(event.linkImmagine);
-        setPrezzoBiglietto(event.prezzoBiglietto);
-      }
-    };
-
-    getPois();
+    var eventsUnsub = () => { };
     // Modifica no inserisci
-    if (eventIndex)
-      getEvent();
+    if (eventIndex) {
+      eventsUnsub = onSnapshot(doc(db, 'events', eventIndex), (docSnap) => {
+        if (docSnap.exists()) {
+          setEditMode(true);
+
+          const event = docSnap.data();
+
+          setNome(event.nome);
+          setIdPoi(event.idPoi);
+          setDataOra(new Date((event.dataOra.seconds + 7200) * 1000).toISOString().slice(0, 16));
+          setLinkImmagine(event.linkImmagine);
+          setPrezzoBiglietto(event.prezzoBiglietto);
+        }
+      });
+    }
+    
+    return () => {
+      poisUnsub();
+      eventsUnsub();
+    }
   }, []);
 
   const navigate = useNavigate();

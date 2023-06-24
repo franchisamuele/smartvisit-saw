@@ -18,7 +18,7 @@ import { GlobalStateContext } from '../App';
 import { Timestamp } from 'firebase/firestore';
 
 export default function Main() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(auth?.currentUser || null);
   const { globalState, setGlobalState } = useContext(GlobalStateContext);
 
   useEffect(() => {

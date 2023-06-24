@@ -36,7 +36,7 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  console.log('fetching', event.request.url);
+  // console.log('fetching', event.request.url);
 
   // No caching for firestore
   if (event.request.url.indexOf('firestore.googleapis.com') === -1) {

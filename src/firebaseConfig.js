@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { doc, getDoc, getFirestore } from 'firebase/firestore'
+import { doc, getDoc, initializeFirestore, persistentLocalCache } from 'firebase/firestore'
 import { getAuth, GoogleAuthProvider } from 'firebase/auth'
 
 const firebaseConfig = {
@@ -14,7 +14,7 @@ const firebaseConfig = {
 // Create the connection with Firebase
 const app = initializeApp(firebaseConfig);
 
-export const db = getFirestore(app);
+export const db = initializeFirestore(app, {localCache: persistentLocalCache({})});
 export const auth = getAuth(app);
 export const provider = new GoogleAuthProvider();
 

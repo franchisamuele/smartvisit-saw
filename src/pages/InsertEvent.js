@@ -36,7 +36,7 @@ export default function InsertEvent() {
 
         setNome(event.nome);
         setIdPoi(event.idPoi);
-        setDataOra(new Date(Date(event.dataOra)).toISOString().slice(0, 16));
+        setDataOra(new Date((event.dataOra.seconds + 7200) * 1000).toISOString().slice(0, 16));
         setLinkImmagine(event.linkImmagine);
         setPrezzoBiglietto(event.prezzoBiglietto);
       }

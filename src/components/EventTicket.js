@@ -39,7 +39,7 @@ export default function EventTicket({ data }) {
       persone: numeroPersone,
       prezzoTotale: currentPrice
     };
-    await addDoc(collection(db, "tickets"), res);
+    addDoc(collection(db, "tickets"), res);
 
     navigate('/tickets');
   }

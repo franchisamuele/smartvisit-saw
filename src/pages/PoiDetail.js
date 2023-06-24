@@ -16,7 +16,7 @@ export default function PoiDetail() {
   const deletePoi = async () => {
     const message = "Sei davvero sicuro di voler eliminare il punto di interesse?\nQuesta azione è irreversibile!";
     if (window.confirm(message)) {
-      await deleteDoc(doc(db, "poi", poiIndex));
+      deleteDoc(doc(db, "poi", poiIndex));
       navigate("/pointsOfInterest");
     }
   }

@@ -11,7 +11,7 @@ export default function Event({ id, nome, nomePoi, dataOra, linkImmagine, setSho
   async function deleteEvent(nomeEvento, idEvento) {
     const message = "Sei davvero sicuro di voler eliminare l'evento '" + nomeEvento + "'?\nQuesta azione è irreversibile!";
     if (window.confirm(message)) {
-      await deleteDoc(doc(db, "events", idEvento));
+      deleteDoc(doc(db, "events", idEvento));
       setShouldReloadEvents(true);
     }
   }

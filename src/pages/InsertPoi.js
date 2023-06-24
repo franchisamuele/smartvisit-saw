@@ -59,13 +59,13 @@ export default function InsertPoi() {
     if (!editMode) {
       const message = "Sei sicuro di voler inserire questo poi?";
       if (window.confirm(message)) {
-        await addDoc(collection(db, "poi"), res);
+        addDoc(collection(db, "poi"), res);
         navigate('/pointsOfInterest');
       }
     } else {
       const message = "Sei sicuro di voler modificare questo poi?";
       if (window.confirm(message)) {
-        await updateDoc(doc(db, 'poi', poiIndex), res);
+        updateDoc(doc(db, 'poi', poiIndex), res);
         navigate('/pointsOfInterest');
       }
     }

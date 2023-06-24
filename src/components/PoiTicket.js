@@ -13,16 +13,7 @@ export default function PoiTicket({ data }) {
   const [inputDate, setInputDate] = useState(getCurrentDate());
 
   function getCurrentDate() {
-    // Ottenere la data corrente
-    var dataCorrente = new Date();
-  
-    // Ottenere l'anno, il mese e il giorno dalla data corrente
-    var anno = dataCorrente.getFullYear();
-    var mese = (dataCorrente.getMonth() + 1).toString().padStart(2, '0'); // +1 perché i mesi in JavaScript sono zero-based
-    var giorno = dataCorrente.getDate().toString().padStart(2, '0');
-  
-    // Formattare la data nel formato desiderato
-    return anno + '-' + mese + '-' + giorno;
+    return new Date().toISOString().slice(0, 10);
   }
 
   async function handleSubmit(e) {

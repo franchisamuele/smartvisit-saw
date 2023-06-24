@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore'
 import LoadingSpinner from '../components/LoadingSpinner'
+import NoPage from './NoPage';
 
 export default function BuyTicket() {
   const { ticketType, index } = useParams();
@@ -44,6 +45,6 @@ export default function BuyTicket() {
     ) : 
     ticketType === 'E' ? (
       data ? <EventTicket data={data} /> : <LoadingSpinner />
-    ) : null
+    ) : <NoPage />
   );
 }

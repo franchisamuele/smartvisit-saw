@@ -6,8 +6,10 @@ import { collection, doc, getDoc, getDocs, orderBy, query, where } from 'firebas
 import { auth } from '../firebaseConfig';
 import { GlobalStateContext } from '../App';
 import { getTodayTimestamp } from './Main';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function Tickets() {
+  const [loading, setLoading] = useState(true);
   const { globalState } = useContext(GlobalStateContext);
   const [tickets, setTickets] = useState([]);
   const [expiredTickets, setExpiredTickets] = useState([]);
@@ -34,6 +36,7 @@ export default function Tickets() {
 
       setTickets(tempTickets.filter(ticket => ticket.dataOra.seconds >= getTodayTimestamp()));
       setExpiredTickets(tempTickets.filter(ticket => ticket.dataOra.seconds < getTodayTimestamp()).reverse());
+      setLoading(false);
     };
 
     getTickets();
@@ -56,41 +59,45 @@ export default function Tickets() {
         </div>
       </div>
 
-      <div className="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
-        {tickets.map((ticket) => (
-          <Ticket
-            key={ticket.id}
-            id={ticket.id}
-            idPoi={ticket.idPoi}
-            nomePoi={ticket.nomePoi}
-            nomeEvento={ticket.nomeEvento}
-            prezzoTotale={ticket.prezzoTotale}
-            dataOra={ticket.dataOra}
-          />
-        ))}
-      </div>
+      {loading ? <LoadingSpinner /> : (
+        <>
+          <div className="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
+            {tickets.map((ticket) => (
+              <Ticket
+                key={ticket.id}
+                id={ticket.id}
+                idPoi={ticket.idPoi}
+                nomePoi={ticket.nomePoi}
+                nomeEvento={ticket.nomeEvento}
+                prezzoTotale={ticket.prezzoTotale}
+                dataOra={ticket.dataOra}
+              />
+            ))}
+          </div>
 
-      {expiredTickets.length > 0 ? (
-        <div className='mt-3 mb-3 w-100 text-center'>
-          <button onClick={toggleExpired} className="btn btn-secondary">{showExpired ? "Nascondi" : "Mostra"} biglietti scaduti</button>
-        </div>
-      ) : null}
+          {expiredTickets.length > 0 ? (
+            <div className='mt-3 mb-3 w-100 text-center'>
+              <button onClick={toggleExpired} className="btn btn-secondary">{showExpired ? "Nascondi" : "Mostra"} biglietti scaduti</button>
+            </div>
+          ) : null}
 
-      {showExpired ? (
-        <div className="mt-3 row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
-          {expiredTickets.map((ticket) => (
-            <Ticket
-              key={ticket.id}
-              id={ticket.id}
-              idPoi={ticket.idPoi}
-              nomePoi={ticket.nomePoi}
-              nomeEvento={ticket.nomeEvento}
-              prezzoTotale={ticket.prezzoTotale}
-              dataOra={ticket.dataOra}
-            />
-          ))}
-        </div>
-      ) : null}
+          {showExpired ? (
+            <div className="mt-3 row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
+              {expiredTickets.map((ticket) => (
+                <Ticket
+                  key={ticket.id}
+                  id={ticket.id}
+                  idPoi={ticket.idPoi}
+                  nomePoi={ticket.nomePoi}
+                  nomeEvento={ticket.nomeEvento}
+                  prezzoTotale={ticket.prezzoTotale}
+                  dataOra={ticket.dataOra}
+                />
+              ))}
+            </div>
+          ) : null}
+        </>
+      )}
 
     </div>
   );

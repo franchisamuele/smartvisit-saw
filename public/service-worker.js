@@ -4,6 +4,7 @@ const DYNAMIC_CACHE = 'dynamic-v1';
 const assets = [
   '/',
   '/index.html',
+  '/fallback.html',
   'images/favicon.ico',
   'images/manifest-icon-192.png',
   'images/manifest-icon-512.png',
@@ -52,6 +53,6 @@ self.addEventListener('fetch', event => {
             })
         )
         )
-    );
+    ).catch(() => caches.match('/FallbackPage'));
   }
 });

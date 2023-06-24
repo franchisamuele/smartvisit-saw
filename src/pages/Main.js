@@ -34,33 +34,40 @@ export default function Main() {
     return unsubscribe;
   }, []);
 
-  return user ? (
+  return (
     <BrowserRouter>
-      <Navbar />
+      {user && <Navbar />}
       <Routes>
-        <Route exact path="/:poiIndex?" element={<MapPage />} />
-        <Route path="/pointsOfInterest" element={<Pois />} />
-        <Route path="/pointsOfInterest/:poiIndex" element={<PoiDetail />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/tickets" element={<Tickets />} />
-        <Route path="/buyticket/:ticketType/:index" element={<BuyTicket />} />
-        <Route path="/FallbackPage" element={<FallbackPage />} />
-
-        {/* SOLO ADMIN */}
-        {globalState.admin ? (
+        {user ? (
           <>
-            <Route path="/insertPoi/:poiIndex?" element={<InsertPoi />} />
-            <Route path="/insertEvent/:eventIndex?" element={<InsertEvent />} />
-          </>
-        ) : null}
-        {/* SOLO ADMIN */}
+            <Route exact path="/:poiIndex?" element={<MapPage />} />
+            <Route path="/pointsOfInterest" element={<Pois />} />
+            <Route path="/pointsOfInterest/:poiIndex" element={<PoiDetail />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/tickets" element={<Tickets />} />
+            <Route path="/buyticket/:ticketType/:index" element={<BuyTicket />} />
+            <Route path="/FallbackPage" element={<FallbackPage />} />
 
-        <Route path="/NoPage" element={<NoPage />} />
-        <Route path="*" element={<NoPage />} />
+            {/* SOLO ADMIN */}
+            {globalState.admin ? (
+              <>
+                <Route path="/insertPoi/:poiIndex?" element={<InsertPoi />} />
+                <Route path="/insertEvent/:eventIndex?" element={<InsertEvent />} />
+              </>
+            ) : null}
+            {/* SOLO ADMIN */}
+
+            <Route path="/NoPage" element={<NoPage />} />
+          </>
+        ) : (
+          <>
+            <Route path="/FallbackPage" element={<FallbackPage />} />
+            <Route path="*" element={<LoginPage />} />
+          </>
+        )
+        }
       </Routes>
     </BrowserRouter>
-  ) : (
-    <LoginPage />
   );
 }
 
@@ -85,5 +92,5 @@ export function getFormattedDate(timestamp, nomeEvento) {
 
   // Costruisci la stringa di output nel formato desiderato
   return nomeEvento ? `${day}/${month}/${year} ${hours}:${minutes}` :
-                      `${day}/${month}/${year}`;
+    `${day}/${month}/${year}`;
 }

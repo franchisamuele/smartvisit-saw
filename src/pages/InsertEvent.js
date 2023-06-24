@@ -5,7 +5,7 @@ import { db } from '../firebaseConfig'
 
 export default function InsertEvent() {
   const [nome, setNome] = useState("");
-  const [idPoi, setIdPoi] = useState("");
+  const [nomePoi, setNomePoi] = useState("");
   const [dataOra, setDataOra] = useState("");
   const [linkImmagine, setLinkImmagine] = useState("");
   const [prezzoBiglietto, setPrezzoBiglietto] = useState("");
@@ -30,7 +30,7 @@ export default function InsertEvent() {
           const event = docSnap.data();
 
           setNome(event.nome);
-          setIdPoi(event.idPoi);
+          setNomePoi(event.nomePoi);
           setDataOra(new Date((event.dataOra.seconds + 7200) * 1000).toISOString().slice(0, 16));
           setLinkImmagine(event.linkImmagine);
           setPrezzoBiglietto(event.prezzoBiglietto);
@@ -53,7 +53,7 @@ export default function InsertEvent() {
       return alert("Il prezzo del biglietto deve essere >= 1!");
     }
 
-    const res = { idPoi, nome, dataOra: Timestamp.fromDate(new Date(dataOra)), linkImmagine, prezzoBiglietto };
+    const res = { nomePoi, nome, dataOra: Timestamp.fromDate(new Date(dataOra)), linkImmagine, prezzoBiglietto };
 
     if (!editMode) {
       const message = "Sei sicuro di voler inserire questo evento?";
@@ -77,11 +77,11 @@ export default function InsertEvent() {
         <p>Nome: <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} required></input></p>
         <p>
           Punto di interesse:{' '}
-          <select required value={idPoi} onChange={(e) => setIdPoi(e.target.value)}>
+          <select required value={nomePoi} onChange={(e) => setNomePoi(e.target.value)}>
             <option disabled value=""> -- seleziona un poi -- </option>
             {pois.map((poi) => {
               return (
-                <option key={poi.id} value={poi.id}>{poi.nome}</option>
+                <option key={poi.id} value={poi.nome}>{poi.nome}</option>
               );
             })}
           </select>

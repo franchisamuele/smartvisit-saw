@@ -3,7 +3,7 @@ import { TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { Icon } from 'leaflet'
 import LocationMarker from './LocationMarker'
 import LocationControl from './LocationControl'
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, onSnapshot } from 'firebase/firestore'
 import { db } from '../firebaseConfig';
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -29,16 +29,9 @@ export default function Map() {
   const map = useMap();
 
   useEffect(() => {
-    const docRef = collection(db, 'poi');
-
-    const getPois = async () => {
-
-      const docSnap = await getDocs(docRef);
-      setPois(docSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-
-    };
-
-    getPois();
+    return onSnapshot(collection(db, 'poi'), (poisSnap) => {
+      setPois(poisSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    });
   }, []);
 
   useEffect(() => {
@@ -49,7 +42,7 @@ export default function Map() {
         map.flyTo({ lat: target.latitudine, lng: target.longitudine }, 18);
       }
     }
-  }, [pois, poiIndex, map]);
+  }, [pois]);
 
   return (
     <>

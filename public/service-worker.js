@@ -1,9 +1,7 @@
-const STATIC_CACHE = 'static-v1';
-const DYNAMIC_CACHE = 'dynamic-v1';
+const STATIC_CACHE = 'static-v2';
+const DYNAMIC_CACHE = 'dynamic-v2';
 
 const assets = [
-  '/',
-  '/index.html',
   'images/favicon.ico',
   'images/manifest-icon-192.png',
   'images/manifest-icon-512.png',
@@ -12,6 +10,7 @@ const assets = [
   'images/Photos/torre_di_pisa.jpg',
   'https://fonts.googleapis.com/icon?family=Material+Icons',
   'https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900',
+  'https://unpkg.com/leaflet@1.5.1/dist/images/marker-icon.png',
 ]
 
 self.addEventListener('install', event => {
@@ -38,8 +37,8 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   // console.log('fetching', event.request.url);
 
-  // No caching for firestore
-  if (event.request.url.indexOf('firestore.googleapis.com') === -1) {
+  // No caching for firestore and openstreetmap
+  if (event.request.url.indexOf('firestore.googleapis.com') === -1 || event.request.url.indexOf('openstreetmap') === -1) {
     // Cache-First
     event.respondWith(
       caches

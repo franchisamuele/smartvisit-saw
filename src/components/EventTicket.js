@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { auth, db } from '../firebaseConfig'
-import { collection, addDoc, doc, onSnapshot } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { getFormattedDate } from "../pages/Main";
 
 export default function EventTicket({ data }) {
@@ -10,32 +10,26 @@ export default function EventTicket({ data }) {
 
   const [numeroPersone, setNumeroPersone] = useState(1);
   const currentPrice = data.prezzoBiglietto * numeroPersone;
-
-  const [poi, setPoi] = useState(null);
-  useEffect(() => {
-    return onSnapshot(doc(db, 'poi', data.idPoi), (docSnap) => {
-      if (docSnap.exists()) {
-        setPoi({ ...docSnap.data(), id: docSnap.id });
-      }
-    });
-  }, []);
-
+  
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const res = {
-      uid: auth.currentUser.uid,
-      idPoi: data.idPoi,
-      nomeEvento: data.nome,
-      idEvento: index,
-      tipo: ticketType,
-      dataOra: data.dataOra,
-      persone: numeroPersone,
-      prezzoTotale: currentPrice
-    };
-    addDoc(collection(db, "tickets"), res);
-
-    navigate('/tickets');
+    const message = `Sei sicuro di voler pagare ${currentPrice}€?`;
+    if (window.confirm(message)) {
+      const res = {
+        uid: auth.currentUser.uid,
+        nomePoi: data.nomePoi,
+        nomeEvento: data.nome,
+        idEvento: index,
+        tipo: ticketType,
+        dataOra: data.dataOra,
+        persone: numeroPersone,
+        prezzoTotale: currentPrice
+      };
+      addDoc(collection(db, "tickets"), res);
+  
+      navigate('/tickets');
+    }
   }
 
   return (
@@ -44,7 +38,7 @@ export default function EventTicket({ data }) {
       <form onSubmit={handleSubmit}>
 
         <p className="mt-3">Evento: {data.nome}</p>
-        <p className="mt-3">Luogo: {poi ? poi.nome : "Caricamento..."}</p>
+        <p className="mt-3">Luogo: {data.nomePoi}</p>
         <p>Prezzo a persona: {data.prezzoBiglietto} €</p>
         <p>Data e ora: {getFormattedDate(data.dataOra.seconds * 1000, data.idEvento)}</p>
         <p>Persone: <input type="number" value={numeroPersone} onChange={(e) => setNumeroPersone(e.target.value)} placeholder="Numero persone" required></input></p>

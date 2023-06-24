@@ -23,18 +23,20 @@ export default function PoiTicket({ data }) {
       return alert("Il numero di persone deve essere >= 1!");
     }
 
-    const res = {
-      uid: auth.currentUser.uid,
-      idPoi: poiIndex,
-      idEvento: null,
-      tipo: ticketType,
-      dataOra: Timestamp.fromDate(new Date(inputDate)),
-      persone: numeroPersone,
-      prezzoTotale: currentPrice
-    };
-    addDoc(collection(db, "tickets"), res);
+    const message = `Sei sicuro di voler pagare ${currentPrice}€?`;
+    if (window.confirm(message)) {
+      const res = {
+        uid: auth.currentUser.uid,
+        nomePoi: data.nome,
+        tipo: ticketType,
+        dataOra: Timestamp.fromDate(new Date(inputDate)),
+        persone: numeroPersone,
+        prezzoTotale: currentPrice
+      };
+      addDoc(collection(db, "tickets"), res);
 
-    navigate('/tickets');
+      navigate('/tickets');
+    }
   }
 
   return (

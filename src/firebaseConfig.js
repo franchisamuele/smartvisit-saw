@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { doc, getDoc, initializeFirestore, persistentLocalCache } from 'firebase/firestore'
+import { disableNetwork, doc, enableNetwork, getDoc, initializeFirestore, persistentLocalCache } from 'firebase/firestore'
 import { getAuth, GoogleAuthProvider } from 'firebase/auth'
 
 const firebaseConfig = {
@@ -24,3 +24,11 @@ export async function isAdmin(uid) {
 
   return docSnap.exists();
 }
+
+window.addEventListener('online', () => {
+  enableNetwork(db);
+});
+
+window.addEventListener('offline', () => {
+  disableNetwork(db);
+});

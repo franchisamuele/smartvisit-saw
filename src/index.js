@@ -20,8 +20,6 @@ if ('serviceWorker' in navigator) {
     })
 }
 
-Notification.requestPermission();
-
 export async function sendNotification(message, description, image, location, navigate) {
   if ("Notification" in window) {
     Notification.requestPermission().then((result) => {

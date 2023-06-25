@@ -9,8 +9,8 @@ const assets = [
   'images/Photos/battistero.jpg',
   'images/Photos/cattedrale.jpg',
   'images/Photos/torre_di_pisa.jpg',
-  'https://fonts.googleapis.com/icon?family=Material+Icons',
-  'https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900',
+  'https://fonts.googleapis.com/icon?family=Material+Icons&display=swap',
+  'https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap',
   'https://unpkg.com/leaflet@1.5.1/dist/images/marker-icon.png',
 ]
 

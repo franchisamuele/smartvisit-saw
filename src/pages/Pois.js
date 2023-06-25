@@ -1,5 +1,5 @@
 import Poi from '../components/Poi';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { db } from '../firebaseConfig';
 import { collection, onSnapshot } from 'firebase/firestore'
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -9,6 +9,10 @@ export default function Pois() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [pois, setPois] = useState([]);
+
+  const filteredPois = useMemo(() => {
+    return pois.filter(poi => !search || poi.nome.toLowerCase().includes(search.toLowerCase()))
+  }, [pois, search]);
 
   useEffect(() => {
     return onSnapshot(collection(db, 'poi'), (poisSnap) => {
@@ -24,8 +28,7 @@ export default function Pois() {
         <SearchBar search={search} setSearch={setSearch} />
 
         <div className="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
-          {pois
-            .filter(poi => !search || poi.nome.toLowerCase().includes(search.toLowerCase()))
+          {filteredPois
             .map((poi) => {
               return (<Poi
                 key={poi.id}

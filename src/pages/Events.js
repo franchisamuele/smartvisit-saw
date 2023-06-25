@@ -4,9 +4,11 @@ import { db } from '../firebaseConfig';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore'
 import { getTodayTimestamp } from './Main';
 import LoadingSpinner from '../components/LoadingSpinner';
+import SearchBar from '../components/SearchBar';
 
 export default function Events() {
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
   const [events, setEvents] = useState([]);
   const [expiredEvents, setExpiredEvents] = useState([]);
   const [shouldReloadEvents, setShouldReloadEvents] = useState(false);
@@ -28,11 +30,15 @@ export default function Events() {
     });
   }, [shouldReloadEvents]);
 
-    return loading ? <LoadingSpinner /> : (
-      <>
-        <div className="container mb-3">
-          <div className="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
-            {events.map((event) => {
+  return loading ? <LoadingSpinner /> : (
+    <>
+      <div className="container mb-3">
+        <SearchBar search={search} setSearch={setSearch} />
+
+        <div className="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
+          {events
+            .filter(event => !search || event.nome.toLowerCase().includes(search.toLowerCase()) || event.nomePoi.toLowerCase().includes(search.toLowerCase()))
+            .map((event) => {
               return (<Event
                 key={event.id}
                 id={event.id}
@@ -44,17 +50,19 @@ export default function Events() {
                 expired={false}
               />);
             })}
+        </div>
+
+        {expiredEvents.filter(event => !search || event.nome.toLowerCase().includes(search.toLowerCase()) || event.nomePoi.toLowerCase().includes(search.toLowerCase())).length > 0 ? (
+          <div className='mt-3 mb-3 w-100 text-center'>
+            <button onClick={toggleExpired} className="btn btn-secondary">{showExpired ? "Nascondi" : "Mostra"} eventi passati</button>
           </div>
+        ) : null}
 
-          {expiredEvents.length > 0 ? (
-            <div className='mt-3 mb-3 w-100 text-center'>
-              <button onClick={toggleExpired} className="btn btn-secondary">{showExpired ? "Nascondi" : "Mostra"} eventi passati</button>
-            </div>
-          ) : null}
-
-          {showExpired ? (
-            <div className="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
-              {expiredEvents.map((event) => {
+        {showExpired ? (
+          <div className="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-xl-3">
+            {expiredEvents
+              .filter(event => !search || event.nome.toLowerCase().includes(search.toLowerCase()) || event.nomePoi.toLowerCase().includes(search.toLowerCase()))
+              .map((event) => {
                 return (<Event
                   key={event.id}
                   id={event.id}
@@ -66,9 +74,9 @@ export default function Events() {
                   expired={true}
                 />);
               })}
-            </div>
-          ) : null}
-        </div>
-      </>
-    );
-  }
+          </div>
+        ) : null}
+      </div>
+    </>
+  );
+}

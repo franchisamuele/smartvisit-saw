@@ -2,6 +2,7 @@ const STATIC_CACHE = 'static-v2';
 const DYNAMIC_CACHE = 'dynamic-v2';
 
 const assets = [
+  'fallback-page.html',
   'images/favicon.ico',
   'images/manifest-icon-192.png',
   'images/manifest-icon-512.png',
@@ -38,18 +39,22 @@ self.addEventListener('fetch', event => {
   // console.log('fetching', event.request.url);
 
   // No caching for firestore and openstreetmap
-  if (event.request.url.indexOf('firestore.googleapis.com') === -1 || event.request.url.indexOf('openstreetmap') === -1) {
+  if (!event.request.url.includes('firestore') && !event.request.url.includes('openstreetmap')) {
     // Cache-First
     event.respondWith(
       caches
         .match(event.request) // richiesta già in cache
-        .then(cached => cached || fetch(event.request).then(fetchRes => // cache || richiedi (va avanti con la fetch normale e salva in cache)
-          caches.open(DYNAMIC_CACHE)
-            .then(cache => {
-              cache.put(event.request.url, fetchRes.clone());
-              return fetchRes;
-            })
-        )
+        .then(cached => cached || fetch(event.request) // cache || richiedi (va avanti con la fetch normale e salva in cache)
+          .then(fetchRes =>
+            caches.open(DYNAMIC_CACHE)
+              .then(cache => {
+                cache.put(event.request.url, fetchRes.clone());
+                return fetchRes;
+              })
+          )
+          .catch(() => {
+            return caches.match('/fallback-page.html');
+          })
         )
     );
   }

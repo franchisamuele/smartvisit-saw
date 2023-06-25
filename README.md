@@ -24,4 +24,4 @@ Probabilmente ho usato male react router, ma non ho trovato la convenzione su co
 - Le dipendenze dei biglietti (nomeEvento, nomePoi), e degli eventi (nomePoi) non vengono aggiornate ma sono definitive.
 - La mia idea per la notifica era che quando l'utente si avvicina ad un punto di interesse, arriva la notifica per visualizzare i dettagli.
 - Per non complicare troppo l'implementazione ho fatto il contrario, se viene aperto il dettaglio arriva una notifica per visualizzare il punto sulla mappa.
-- I markers dovevano essere raggruppati in un <MarkerClusterGroup>, che però non funzionava, quindi l'ho rimosso. Questo garantiva una migliore visualizzazione quando i marker si sovrapponevano.
+- I markers dovevano essere raggruppati in un MarkerClusterGroup, che però non funzionava, quindi l'ho rimosso. Questo garantiva una migliore visualizzazione quando i marker si sovrapponevano.

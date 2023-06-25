@@ -5,7 +5,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { getFormattedDate } from "../pages/Main";
 
 export default function EventTicket({ data }) {
-  const { ticketType, index } = useParams();
+  const { ticketType } = useParams();
   const navigate = useNavigate();
 
   const [numeroPersone, setNumeroPersone] = useState(1);
@@ -20,7 +20,6 @@ export default function EventTicket({ data }) {
         uid: auth.currentUser.uid,
         nomePoi: data.nomePoi,
         nomeEvento: data.nome,
-        idEvento: index,
         tipo: ticketType,
         dataOra: data.dataOra,
         persone: numeroPersone,

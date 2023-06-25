@@ -4,7 +4,7 @@ import { auth, db } from '../firebaseConfig'
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 
 export default function PoiTicket({ data }) {
-  const { ticketType, index: poiIndex } = useParams();
+  const { ticketType } = useParams();
   const navigate = useNavigate();
 
   const [numeroPersone, setNumeroPersone] = useState(1);

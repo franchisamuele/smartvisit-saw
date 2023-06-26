@@ -5,14 +5,13 @@ import { deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import { getFormattedDate } from '../pages/Main';
 
-export default function Event({ id, nome, nomePoi, dataOra, linkImmagine, setShouldReloadEvents, expired }) {
+export default function Event({ id, nome, nomePoi, dataOra, linkImmagine, expired }) {
   const { globalState } = useContext(GlobalStateContext);
 
-  async function deleteEvent(nomeEvento, idEvento) {
+  function deleteEvent(nomeEvento, idEvento) {
     const message = "Sei davvero sicuro di voler eliminare l'evento '" + nomeEvento + "'?\nQuesta azione è irreversibile!";
     if (window.confirm(message)) {
       deleteDoc(doc(db, "events", idEvento));
-      setShouldReloadEvents(true);
     }
   }
 

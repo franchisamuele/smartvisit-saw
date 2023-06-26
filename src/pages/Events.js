@@ -11,7 +11,6 @@ export default function Events() {
   const [search, setSearch] = useState("");
   const [events, setEvents] = useState([]);
   const [expiredEvents, setExpiredEvents] = useState([]);
-  const [shouldReloadEvents, setShouldReloadEvents] = useState(false);
 
   const [showExpired, setShowExpired] = useState(false);
   function toggleExpired() {
@@ -27,8 +26,6 @@ export default function Events() {
   }, [expiredEvents, search]);
 
   useEffect(() => {
-    setShouldReloadEvents(false);
-
     return onSnapshot(query(collection(db, 'events'), orderBy('dataOra')), (eventsSnap) => {
       const tempEvents = eventsSnap.docs.map(doc => ({ ...doc.data(), id: doc.id }));
 
@@ -36,7 +33,7 @@ export default function Events() {
       setExpiredEvents(tempEvents.filter(event => event.dataOra.seconds < getTodayTimestamp()).reverse());
       setLoading(false);
     });
-  }, [shouldReloadEvents]);
+  }, []);
 
   return loading ? <LoadingSpinner /> : (
     <>
@@ -53,7 +50,6 @@ export default function Events() {
                 nomePoi={event.nomePoi}
                 dataOra={event.dataOra}
                 linkImmagine={event.linkImmagine}
-                setShouldReloadEvents={setShouldReloadEvents}
                 expired={false}
               />);
             })}
@@ -76,7 +72,6 @@ export default function Events() {
                   nomePoi={event.nomePoi}
                   dataOra={event.dataOra}
                   linkImmagine={event.linkImmagine}
-                  setShouldReloadEvents={setShouldReloadEvents}
                   expired={true}
                 />);
               })}

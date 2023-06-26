@@ -4,11 +4,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { db } from '../firebaseConfig'
 
 export default function InsertEvent() {
-  const [nome, setNome] = useState("");
-  const [nomePoi, setNomePoi] = useState("");
-  const [dataOra, setDataOra] = useState("");
-  const [linkImmagine, setLinkImmagine] = useState("");
-  const [prezzoBiglietto, setPrezzoBiglietto] = useState("");
+  const [event, setEvent] = useState({
+    nome: "",
+    nomePoi: "",
+    dataOra: "",
+    linkImmagine: "",
+    prezzoBiglietto: ""
+  });
 
   const [editMode, setEditMode] = useState(false);
   const { eventIndex } = useParams();
@@ -28,12 +30,7 @@ export default function InsertEvent() {
           setEditMode(true);
 
           const event = docSnap.data();
-
-          setNome(event.nome);
-          setNomePoi(event.nomePoi);
-          setDataOra(new Date((event.dataOra.seconds + 7200) * 1000).toISOString().slice(0, 16));
-          setLinkImmagine(event.linkImmagine);
-          setPrezzoBiglietto(event.prezzoBiglietto);
+          setEvent({...event, dataOra: new Date((event.dataOra.seconds + 7200) * 1000).toISOString().slice(0, 16)});
         }
       });
     }
@@ -46,14 +43,14 @@ export default function InsertEvent() {
 
   const navigate = useNavigate();
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
 
-    if (prezzoBiglietto < 1) {
+    if (event.prezzoBiglietto < 1) {
       return alert("Il prezzo del biglietto deve essere >= 1!");
     }
 
-    const res = { nomePoi, nome, dataOra: Timestamp.fromDate(new Date(dataOra)), linkImmagine, prezzoBiglietto };
+    const res = { ...event, dataOra: Timestamp.fromDate(new Date(event.dataOra)) };
 
     if (!editMode) {
       const message = "Sei sicuro di voler inserire questo evento?";
@@ -70,14 +67,18 @@ export default function InsertEvent() {
     }
   }
 
+  function setField(e) {
+    setEvent({...event, [e.target.name]: e.target.value});
+  }
+
   return (
     <div className="container mt-3 mb-3">
       <h1 className="mb-4 text-center">{editMode ? "Modifica" : "Inserimento"} Eventi</h1>
       <form onSubmit={handleSubmit}>
-        <p>Nome: <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} required></input></p>
+        <p>Nome: <input type="text" name="nome" value={event.nome} onChange={setField} required></input></p>
         <p>
           Punto di interesse:{' '}
-          <select required value={nomePoi} onChange={(e) => setNomePoi(e.target.value)}>
+          <select required name="nomePoi" value={event.nomePoi} onChange={setField}>
             <option disabled value=""> -- seleziona un poi -- </option>
             {pois.map((poi) => {
               return (
@@ -86,9 +87,9 @@ export default function InsertEvent() {
             })}
           </select>
         </p>
-        <p>Data e ora: <input type="datetime-local" value={dataOra} onChange={(e) => setDataOra(e.target.value)} required></input></p>
-        <p>Link immagine: <input type="text" value={linkImmagine} onChange={(e) => setLinkImmagine(e.target.value)} required></input></p>
-        <p>Prezzo biglietto: <input type="number" value={prezzoBiglietto} onChange={(e) => setPrezzoBiglietto(e.target.value)} required></input></p>
+        <p>Data e ora: <input type="datetime-local" name="dataOra" value={event.dataOra} onChange={setField} required></input></p>
+        <p>Link immagine: <input type="text" name="linkImmagine" value={event.linkImmagine} onChange={setField} required></input></p>
+        <p>Prezzo biglietto: <input type="number" name="prezzoBiglietto" value={event.prezzoBiglietto} onChange={setField} required></input></p>
 
         <input className="btn btn-primary" type="submit" value={editMode ? "Modifica" : "Inserisci"}></input>
       </form>

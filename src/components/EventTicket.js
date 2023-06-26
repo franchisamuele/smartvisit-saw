@@ -39,7 +39,7 @@ export default function EventTicket({ data }) {
         <p className="mt-3">Evento: {data.nome}</p>
         <p className="mt-3">Luogo: {data.nomePoi}</p>
         <p>Prezzo a persona: {data.prezzoBiglietto} €</p>
-        <p>Data e ora: {getFormattedDate(data.dataOra.seconds * 1000, data.idEvento)}</p>
+        <p>Data e ora: {getFormattedDate(data.dataOra.seconds * 1000, data.nome)}</p>
         <p>Persone: <input type="number" value={numeroPersone} onChange={(e) => setNumeroPersone(e.target.value)} placeholder="Numero persone" required></input></p>
 
         <p className="mt-5">Prezzo totale: {currentPrice} €</p>

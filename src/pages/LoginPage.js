@@ -6,15 +6,15 @@ import LoginCarousel from '../components/LoginCarousel';
 import { GoogleButton } from 'react-google-button'
 
 export default function LoginPage() {
-  const [isLogged, setIsLogged] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   function handleLogin() {
     signInWithPopup(auth, provider)
       .catch(() => {
-        setIsLogged(false);
+        setLoading(false);
         window.alert("Errore in fase di autenticazione!");
       });
-    setIsLogged(true);
+    setLoading(true);
   }
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function LoginPage() {
   return <>
   <div className="min-vh-100 align-items-center">
 
-    {isLogged && <LoadingSpinner />}
+    {loading && <LoadingSpinner />}
     <div>
       <div className="login-form text-center">
         <h1 className="font-weight-light text-uppercase">Smart Visit Pisa</h1>

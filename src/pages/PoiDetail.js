@@ -13,7 +13,7 @@ export default function PoiDetail() {
   const { poiIndex } = useParams();
   const navigate = useNavigate();
 
-  const deletePoi = async () => {
+  const deletePoi = () => {
     const message = "Sei davvero sicuro di voler eliminare il punto di interesse?\nQuesta azione è irreversibile!";
     if (window.confirm(message)) {
       deleteDoc(doc(db, "poi", poiIndex));

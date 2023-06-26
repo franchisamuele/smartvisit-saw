@@ -16,7 +16,7 @@ export default function PoiTicket({ data }) {
     return new Date().toISOString().slice(0, 10);
   }
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
 
     if (numeroPersone < 1) {

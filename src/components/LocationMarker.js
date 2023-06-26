@@ -2,7 +2,7 @@ import { Circle, Marker } from "react-leaflet";
 
 export default function LocationMarker({ icon, position }) {
   return <>
-    {position === null ? null : (
+    {position && (
       <Marker position={position} icon={icon}>
         <Circle
           center={position}

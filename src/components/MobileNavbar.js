@@ -20,7 +20,7 @@ export default function MobileNavbar() {
         <i className="material-icons nav__icon">local_activity</i>
         <span className="nav__text">Biglietti</span>
       </NavLink>
-      <Link className="nav__link" onClick={() => auth.signOut()}>
+      <Link className="nav__link" onClick={() => window.confirm("Vuoi uscire dal tuo account corrente?") && auth.signOut()}>
         <i className="material-icons nav__icon">account_circle</i>
         <span className="nav__text">Logout</span>
       </Link>

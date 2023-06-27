@@ -16,7 +16,7 @@ export default function DesktopNavbar() {
           <NavLink className="nav-link" to="./tickets">Biglietti</NavLink>
         </Nav>
         <Nav>
-          <Link className="nav-link justify-content-end" onClick={() => auth.signOut()}>Logout</Link>
+          <Link className="nav-link justify-content-end" onClick={() => window.confirm("Vuoi uscire dal tuo account corrente?") && auth.signOut()}>Logout</Link>
         </Nav>
       </Container>
     </Navbar>
